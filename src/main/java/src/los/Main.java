@@ -10,7 +10,6 @@ import src.los.game.mainMenu;
 import java.io.IOException;
 
 public class Main extends Application {
-
     @Override
     public void start(Stage stage) throws IOException {
         SceneController.getInstance().showMainMenu();
