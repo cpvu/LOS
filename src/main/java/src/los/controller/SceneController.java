@@ -1,10 +1,12 @@
 package src.los.controller;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -24,6 +26,8 @@ public class SceneController {
     private static int GAME_WIDTH = 700;
     private static int GAME_HEIGHT = 500;
     private static SceneController instance = null;
+    @FXML
+    public Label characterName;
     private final Stage currentStage;
     private final Scene mainMenu;
     private final Scene characterSelection;
@@ -37,8 +41,6 @@ public class SceneController {
 
         characterSelection = createCharacterSelection();
         mainMenu = createMainMenu();
-        gameStage = createGameStage();
-
     }
 
     public static SceneController getInstance() throws IOException {
@@ -72,7 +74,7 @@ public class SceneController {
         return menu;
     }
 
-    private Scene createGameStage() throws IOException {
+    public Scene createGameStage() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Player.class.getResource("gameStage.fxml"));
         Scene gameScene = new Scene(fxmlLoader.load());
         AnchorPane background = (AnchorPane) gameScene.lookup("#background");
@@ -85,9 +87,9 @@ public class SceneController {
                 new BackgroundSize(GAME_WIDTH, GAME_HEIGHT, true, true, true, true));
 
         Background anchorBg = new Background(backgroundImage);
-
         background.setBackground(anchorBg);
 
+        this.gameStage = gameScene;
         return gameScene;
     }
 

@@ -2,6 +2,7 @@ package src.los.controller;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import src.los.common.PlayerClass;
 
 import java.io.IOException;
@@ -25,6 +26,9 @@ public class CharacterSelectionController {
             chooseNaruto();
         }
 
+        //Initialize the player class
+        SceneController.getInstance().createGameStage();
         SceneController.getInstance().showGameStage();
+
     }
 }
