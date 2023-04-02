@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<AnchorPane id="background" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.los.controller.GameStageController">
+<AnchorPane id="background" prefHeight="500.0" prefWidth="700.0" stylesheets="@../../../styles/gameStage.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.los.controller.GameStageController">
    <children>
-      <GridPane layoutX="10.0" layoutY="161.0" prefHeight="225.0" prefWidth="577.0">
+      <GridPane gridLinesVisible="true" layoutX="55.0" layoutY="129.0" prefHeight="225.0" prefWidth="577.0" stylesheets="@../../../styles/gameStage.css">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -20,5 +21,12 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
+      <AnchorPane id="userInterface" layoutY="405.0" prefHeight="95.0" prefWidth="700.0" stylesheets="@../../../styles/gameStage.css">
+         <children>
+            <Label fx:id="characterName" alignment="CENTER" layoutX="19.0" layoutY="15.0" prefHeight="32.0" prefWidth="84.0" text="CharacterN" textAlignment="CENTER" />
+            <ImageView fitHeight="49.0" fitWidth="107.0" layoutX="114.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
+            <Label layoutX="497.0" layoutY="22.0" text="Current Level" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
