@@ -2,41 +2,49 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.los.controller.MainMenuController">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="161.5" minWidth="10.0" prefWidth="128.5" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="441.0" minWidth="10.0" prefWidth="438.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.1785888671875" minWidth="10.0" prefWidth="128.5" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="147.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="232.0" minHeight="10.0" prefHeight="157.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="292.0" minHeight="10.0" prefHeight="195.0" vgrow="SOMETIMES" />
-  </rowConstraints>
+<AnchorPane id="menu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.los.controller.MainMenuController">
    <children>
-      <Text layoutX="50.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Shinobi Invaders" textAlignment="CENTER" wrappingWidth="300.0" x="50.0" y="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <font>
-            <Font size="37.0" />
-         </font>
-      </Text>
-      <Button fx:id="start" mnemonicParsing="false" onAction="#startButton" text="Play" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-         <padding>
-            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-         </padding>
-         <GridPane.margin>
-            <Insets />
-         </GridPane.margin>
-      </Button>
-      <Button fx:id="quit" mnemonicParsing="false" text="Quit" textFill="#f54646" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
-         <padding>
-            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-         </padding>
-      </Button>
+      <GridPane layoutX="60.0" layoutY="60.0" prefHeight="394.0" prefWidth="579.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="140.0" minWidth="10.0" prefWidth="90.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="337.0" minWidth="10.0" prefWidth="337.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="90.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="121.0" minHeight="10.0" prefHeight="76.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="210.0" minHeight="10.0" prefHeight="177.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="281.0" minHeight="10.0" prefHeight="140.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Legend of Shinobi" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="39.0" />
+               </font>
+            </Text>
+            <Button fx:id="quit" mnemonicParsing="false" onAction="#quitGame" text="Quit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+               </padding>
+               <GridPane.margin>
+                  <Insets bottom="20.0" />
+               </GridPane.margin>
+            </Button>
+            <Button fx:id="start" mnemonicParsing="false" onAction="#startButton" text="Play" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets bottom="40.0" />
+               </GridPane.margin>
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+               </padding>
+            </Button>
+         </children>
+      </GridPane>
    </children>
-</GridPane>
+</AnchorPane>
