@@ -1,0 +1,11 @@
+#userInterface {
+    -fx-background-color: linear-gradient(to bottom, #dcdcdc, #f0f0f0, #ffffff);
+    -fx-border-color: #b3b3b3;
+    -fx-border-width: 1px;
+    -fx-padding: 10px;
+}
+
+.label {
+    -fx-font-size: 12pt;
+    -fx-text-fill: #333333;
+}
