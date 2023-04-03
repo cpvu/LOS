@@ -20,11 +20,11 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class SpaceDriver extends Application {
+public class SpaceDriver {
     //variables
     private static final Random RAND = new Random();
-    private static final int WIDTH = 700;
-    private static final int HEIGHT = 500;
+    private static final int WIDTH = 500;
+    private static final int HEIGHT = 300;
     private static final int PLAYER_SIZE = 60;
     static final Image PLAYER_IMG = new Image("img.png");
     static final Image EXPLOSION_IMG = new Image("file:./images/explosion.png");
@@ -60,7 +60,7 @@ public class SpaceDriver extends Application {
     private int score;
 
     //start
-    public void start(Stage stage) throws Exception {
+    public Canvas initializeGameScene() {
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> run(gc)));
@@ -76,12 +76,8 @@ public class SpaceDriver extends Application {
             }
         });
         setup();
-        stage.setScene(new Scene(new StackPane(canvas)));
-        stage.setTitle("Space Invaders");
-        stage.show();
-
+        return canvas;
     }
-
     //setup the game
     private void setup() {
         univ = new ArrayList<>();
@@ -285,15 +281,10 @@ public class SpaceDriver extends Application {
 
 
     Bomb newBomb() {
-        return new Bomb(50 + RAND.nextInt(WIDTH - 100), 0, PLAYER_SIZE, BOMBS_IMG[RAND.nextInt(BOMBS_IMG.length)]);
+        return new Bomb(50 + RAND.nextInt(WIDTH - 100), 50 + RAND.nextInt(WIDTH - 100), PLAYER_SIZE, BOMBS_IMG[RAND.nextInt(BOMBS_IMG.length)]);
     }
 
     int distance(int x1, int y1, int x2, int y2) {
         return (int) Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
-    }
-
-
-    public static void main(String[] args) {
-        launch();
     }
 }
