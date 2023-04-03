@@ -21,13 +21,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class SpaceDriver extends Application {
-
     //variables
     private static final Random RAND = new Random();
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = 600;
+    private static final int WIDTH = 700;
+    private static final int HEIGHT = 500;
     private static final int PLAYER_SIZE = 60;
-    static final Image PLAYER_IMG = new Image("file:./images/player.png");
+    static final Image PLAYER_IMG = new Image("img.png");
     static final Image EXPLOSION_IMG = new Image("file:./images/explosion.png");
     static final int EXPLOSION_W = 128;
     static final int EXPLOSION_ROWS = 3;
@@ -36,7 +35,7 @@ public class SpaceDriver extends Application {
     static final int EXPLOSION_STEPS = 15;
 
     static final Image BOMBS_IMG[] = {
-            new Image("file:./images/1.png"),
+            new Image("dead.png"),
             new Image("file:./images/2.png"),
             new Image("file:./images/3.png"),
             new Image("file:./images/4.png"),
@@ -68,7 +67,7 @@ public class SpaceDriver extends Application {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         canvas.setCursor(Cursor.MOVE);
-        canvas.setOnMouseMoved(e -> mouseX = e.getX());
+        canvas.setOnMouseMoved(e -> mouseX = e.getY());
         canvas.setOnMouseClicked(e -> {
             if(shots.size() < MAX_SHOTS) shots.add(player.shoot());
             if(gameOver) {
@@ -88,7 +87,7 @@ public class SpaceDriver extends Application {
         univ = new ArrayList<>();
         shots = new ArrayList<>();
         Bombs = new ArrayList<>();
-        player = new Rocket(WIDTH / 2, HEIGHT - PLAYER_SIZE, PLAYER_SIZE, PLAYER_IMG);
+        player = new Rocket(0, HEIGHT / 2, PLAYER_SIZE, PLAYER_IMG);
         score = 0;
         IntStream.range(0, MAX_BOMBS).mapToObj(i -> this.newBomb()).forEach(Bombs::add);
     }
@@ -113,7 +112,7 @@ public class SpaceDriver extends Application {
 
         player.update();
         player.draw();
-        player.posX = (int) mouseX;
+        player.posY = (int) mouseX;
 
         Bombs.stream().peek(Rocket::update).peek(Rocket::draw).forEach(e -> {
             if(player.colide(e) && !player.exploding) {
@@ -131,7 +130,7 @@ public class SpaceDriver extends Application {
             shot.update();
             shot.draw();
             for (Bomb bomb : Bombs) {
-                if(shot.colide(bomb) && !bomb.exploding) {
+                if(shot.collide(bomb) && !bomb.exploding) {
                     score++;
                     bomb.explode();
                     shot.toRemove = true;
@@ -214,8 +213,8 @@ public class SpaceDriver extends Application {
 
         public void update() {
             super.update();
-            if(!exploding && !destroyed) posY += SPEED;
-            if(posY > HEIGHT) destroyed = true;
+            if(!exploding && !destroyed) posX -= SPEED;
+            if(posX > WIDTH) destroyed = true;
         }
     }
 
@@ -225,7 +224,7 @@ public class SpaceDriver extends Application {
         public boolean toRemove;
 
         int posX, posY, speed = 10;
-        static final int size = 6;
+        static final int size = 10;
 
         public Shot(int posX, int posY) {
             this.posX = posX;
@@ -233,7 +232,7 @@ public class SpaceDriver extends Application {
         }
 
         public void update() {
-            posY-=speed;
+            posX+=speed;
         }
 
 
@@ -248,12 +247,11 @@ public class SpaceDriver extends Application {
             }
         }
 
-        public boolean colide(Rocket Rocket) {
+        public boolean collide (Rocket Rocket) {
             int distance = distance(this.posX + size / 2, this.posY + size / 2,
                     Rocket.posX + Rocket.size / 2, Rocket.posY + Rocket.size / 2);
             return distance  < Rocket.size / 2 + size / 2;
         }
-
 
     }
 
