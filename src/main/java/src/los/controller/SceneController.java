@@ -11,22 +11,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import src.los.Main;
-import src.los.common.MapStages;
-import src.los.common.PlayerClass;
 import src.los.game.CharacterSelect;
 import src.los.game.Player;
-import src.los.game.SpaceDriver;
 import src.los.game.mainMenu;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Objects;
-import java.util.Stack;
-
 public class SceneController {
-    private static int GAME_WIDTH = 700;
-    private static int GAME_HEIGHT = 500;
+    private static final int GAME_WIDTH = 700;
+    private static final int GAME_HEIGHT = 500;
     private static SceneController instance = null;
     @FXML
     public Label characterName;
@@ -58,7 +50,7 @@ public class SceneController {
     }
 
     private Scene createMainMenu() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(mainMenu.class.getResource("mainMenu.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Player.class.getResource("mainMenu.fxml"));
         Scene menu = new Scene(fxmlLoader.load());
 
         AnchorPane background = (AnchorPane) menu.lookup("#menu");
