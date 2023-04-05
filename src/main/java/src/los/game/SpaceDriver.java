@@ -33,18 +33,7 @@ public class SpaceDriver {
     static final int EXPLOSION_STEPS = 15;
 
 
-    static final Image BOMBS_IMG[] = {
-            new Image("dead.png"),
-            new Image("file:./images/2.png"),
-            new Image("file:./images/3.png"),
-            new Image("file:./images/4.png"),
-            new Image("file:./images/5.png"),
-            new Image("file:./images/6.png"),
-            new Image("file:./images/7.png"),
-            new Image("file:./images/8.png"),
-            new Image("file:./images/9.png"),
-            new Image("file:./images/10.png"),
-    };
+    static final Image BOMBS_IMG = new Image("dead.png");
     final int MAX_BOMBS = 10,  MAX_SHOTS = MAX_BOMBS * 2;
     boolean gameOver = false;
     private GraphicsContext gc;
@@ -192,7 +181,7 @@ public class SpaceDriver {
             explosionStep = -1;
         }
     }
-    //computer player
+
     public class Bomb extends Player {
 
         int SPEED = (score/5)+2;
@@ -228,7 +217,7 @@ public class SpaceDriver {
 
         public void draw() {
             gc.setFill(Color.RED);
-            if (score >=50 && score<=70 || score>=120) {
+            if (score >=15 && score<=30 || score>=50) {
                 gc.setFill(Color.YELLOWGREEN);
                 speed = 50;
                 gc.fillRect(posX-5, posY-10, size+10, size+30);
@@ -275,7 +264,7 @@ public class SpaceDriver {
 
 
     Bomb newBomb() {
-        return new Bomb(50 + RAND.nextInt(WIDTH - 100), 50 + RAND.nextInt(WIDTH - 100), PLAYER_SIZE, BOMBS_IMG[RAND.nextInt(BOMBS_IMG.length)]);
+        return new Bomb(50 + RAND.nextInt(WIDTH - 100), 50 + RAND.nextInt(WIDTH - 100), PLAYER_SIZE, BOMBS_IMG);
     }
 
     int distance(int x1, int y1, int x2, int y2) {
