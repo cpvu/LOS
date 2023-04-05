@@ -4,14 +4,26 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane id="background" prefHeight="500.0" prefWidth="700.0" stylesheets="@../../../styles/gameStage.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.los.controller.GameStageController">
    <children>
       <AnchorPane id="userInterface" layoutY="405.0" prefHeight="95.0" prefWidth="700.0" stylesheets="@../../../styles/gameStage.css">
          <children>
-            <Label fx:id="characterName" alignment="CENTER" layoutX="19.0" layoutY="15.0" prefHeight="32.0" prefWidth="128.0" text="CharacterName" textAlignment="CENTER" />
+            <Label fx:id="characterName" alignment="CENTER" layoutX="-2.0" layoutY="7.0" prefHeight="32.0" prefWidth="128.0" text="CharacterName" textAlignment="CENTER" />
             <ImageView fitHeight="49.0" fitWidth="107.0" layoutX="114.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
-            <Label fx:id="level" layoutX="497.0" layoutY="22.0" text="Current Level" />
+            <Label layoutX="556.0" layoutY="13.0" text="Current Level" />
+            <Text layoutX="310.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score:" wrappingWidth="52.018218994140625">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Text>
+            <Label fx:id="scoreLabel" layoutX="367.0" layoutY="26.0" text="0">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <StackPane fx:id="gamePane" prefHeight="405.0" prefWidth="660.0" />

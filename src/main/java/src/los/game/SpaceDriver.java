@@ -16,14 +16,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import src.los.common.PlayerClass;
-import src.los.controller.GameStageController;
 
 public class SpaceDriver {
     //variables
     private static final Random RAND = new Random();
     public static PlayerClass chosenCharacter;
-    private static final int WIDTH = 660;
-    private static final int HEIGHT = 405;
+    private static final int WIDTH = 500;
+    private static final int HEIGHT = 300;
     private static final int PLAYER_SIZE = 60;
     public final Image PLAYER_IMG = new Image(chosenCharacter.getImage());
     static final Image EXPLOSION_IMG = new Image("file:./images/explosion.png");
@@ -34,7 +33,18 @@ public class SpaceDriver {
     static final int EXPLOSION_STEPS = 15;
 
 
-    static final Image BOMBS_IMG = new Image("dead.png");
+    static final Image BOMBS_IMG[] = {
+            new Image("dead.png"),
+            new Image("file:./images/2.png"),
+            new Image("file:./images/3.png"),
+            new Image("file:./images/4.png"),
+            new Image("file:./images/5.png"),
+            new Image("file:./images/6.png"),
+            new Image("file:./images/7.png"),
+            new Image("file:./images/8.png"),
+            new Image("file:./images/9.png"),
+            new Image("file:./images/10.png"),
+    };
     final int MAX_BOMBS = 10,  MAX_SHOTS = MAX_BOMBS * 2;
     boolean gameOver = false;
     private GraphicsContext gc;
@@ -47,6 +57,7 @@ public class SpaceDriver {
     private double mouseX;
     private int score;
 
+    //start
     public Canvas initializeGameScene() {
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -65,7 +76,7 @@ public class SpaceDriver {
         setup();
         return canvas;
     }
-
+    //setup the game
     private void setup() {
         univ = new ArrayList<>();
         shots = new ArrayList<>();
@@ -74,7 +85,7 @@ public class SpaceDriver {
         score = 0;
         IntStream.range(0, MAX_BOMBS).mapToObj(i -> this.newBomb()).forEach(Bombs::add);
     }
-
+    //run Graphics
     private void run(GraphicsContext gc) {
         gc.setFill(Color.grayRgb(20));
         gc.fillRect(0, 0, WIDTH, HEIGHT);
@@ -181,7 +192,7 @@ public class SpaceDriver {
             explosionStep = -1;
         }
     }
-
+    //computer player
     public class Bomb extends Player {
 
         int SPEED = (score/5)+2;
@@ -217,7 +228,7 @@ public class SpaceDriver {
 
         public void draw() {
             gc.setFill(Color.RED);
-            if (score >=10 && score<=20 || score>=50) {
+            if (score >=50 && score<=70 || score>=120) {
                 gc.setFill(Color.YELLOWGREEN);
                 speed = 50;
                 gc.fillRect(posX-5, posY-10, size+10, size+30);
@@ -234,6 +245,7 @@ public class SpaceDriver {
 
     }
 
+    //environment
     public class Universe {
         int posX, posY;
         private int h, w, r, g, b;
@@ -263,7 +275,7 @@ public class SpaceDriver {
 
 
     Bomb newBomb() {
-        return new Bomb(50 + RAND.nextInt(WIDTH - 100), 50 + RAND.nextInt(WIDTH - 100), PLAYER_SIZE, BOMBS_IMG);
+        return new Bomb(50 + RAND.nextInt(WIDTH - 100), 50 + RAND.nextInt(WIDTH - 100), PLAYER_SIZE, BOMBS_IMG[RAND.nextInt(BOMBS_IMG.length)]);
     }
 
     int distance(int x1, int y1, int x2, int y2) {
