@@ -11,21 +11,19 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import src.los.game.CharacterSelect;
+import src.los.common.PlayerClass;
 import src.los.game.Player;
-import src.los.game.mainMenu;
 
 import java.io.IOException;
 public class SceneController {
     private static final int GAME_WIDTH = 700;
     private static final int GAME_HEIGHT = 500;
     private static SceneController instance = null;
-    @FXML
-    public Label characterName;
     private final Stage currentStage;
     private final Scene mainMenu;
     private final Scene characterSelection;
     private Scene gameStage;
+    public static PlayerClass chosenCharacter;
 
     public SceneController() throws IOException {
         currentStage = new Stage();
@@ -45,7 +43,7 @@ public class SceneController {
     }
 
     private Scene createCharacterSelection() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(CharacterSelect.class.getResource("characterSelection.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Player.class.getResource("characterSelection.fxml"));
         return new Scene(fxmlLoader.load());
     }
 
@@ -69,6 +67,8 @@ public class SceneController {
     }
 
     public void createBackground(Scene targetScene) {
+
+
         // refactor the background images, so that images will load based on each scene.
         // Switch with name of method, and use that to access the fxml file.
         // Set the parent node (anchor pane?) to the target element to add an image.

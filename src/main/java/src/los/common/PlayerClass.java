@@ -1,8 +1,8 @@
 package src.los.common;
 
 public enum PlayerClass implements EnumInterface{
-    NARUTO("Naruto", "imageURL", "Rasengan"),
-    SASUKE("Sasuke", "imageURL", "Chidori");
+    NARUTO("Naruto", "img.png", "Rasengan"),
+    SASUKE("Sasuke", "img.png", "Chidori");
 
     private final String characterName;
     private final String characterImage;

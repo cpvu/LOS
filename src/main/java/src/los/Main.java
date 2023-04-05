@@ -5,7 +5,6 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import src.los.controller.SceneController;
-import src.los.game.mainMenu;
 
 import java.io.IOException;
 

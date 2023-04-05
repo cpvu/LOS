@@ -7,32 +7,31 @@ import java.util.Random;
 import java.util.stream.IntStream;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.scene.Cursor;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 import javafx.util.Duration;
+import src.los.common.PlayerClass;
 
 public class SpaceDriver {
     //variables
     private static final Random RAND = new Random();
+    public static PlayerClass chosenCharacter;
     private static final int WIDTH = 500;
     private static final int HEIGHT = 300;
     private static final int PLAYER_SIZE = 60;
-    static final Image PLAYER_IMG = new Image("img.png");
+    public final Image PLAYER_IMG = new Image(chosenCharacter.getImage());
     static final Image EXPLOSION_IMG = new Image("file:./images/explosion.png");
     static final int EXPLOSION_W = 128;
     static final int EXPLOSION_ROWS = 3;
     static final int EXPLOSION_COL = 3;
     static final int EXPLOSION_H = 128;
     static final int EXPLOSION_STEPS = 15;
+
 
     static final Image BOMBS_IMG[] = {
             new Image("dead.png"),
@@ -46,12 +45,11 @@ public class SpaceDriver {
             new Image("file:./images/9.png"),
             new Image("file:./images/10.png"),
     };
-
     final int MAX_BOMBS = 10,  MAX_SHOTS = MAX_BOMBS * 2;
     boolean gameOver = false;
     private GraphicsContext gc;
 
-    Rocket player;
+    Player player;
     List<Shot> shots;
     List<Universe> univ;
     List<Bomb> Bombs;
@@ -83,11 +81,10 @@ public class SpaceDriver {
         univ = new ArrayList<>();
         shots = new ArrayList<>();
         Bombs = new ArrayList<>();
-        player = new Rocket(0, HEIGHT / 2, PLAYER_SIZE, PLAYER_IMG);
+        player = new Player(0, HEIGHT / 2, PLAYER_SIZE, PLAYER_IMG);
         score = 0;
         IntStream.range(0, MAX_BOMBS).mapToObj(i -> this.newBomb()).forEach(Bombs::add);
     }
-
     //run Graphics
     private void run(GraphicsContext gc) {
         gc.setFill(Color.grayRgb(20));
@@ -110,7 +107,7 @@ public class SpaceDriver {
         player.draw();
         player.posY = (int) mouseX;
 
-        Bombs.stream().peek(Rocket::update).peek(Rocket::draw).forEach(e -> {
+        Bombs.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
             if(player.colide(e) && !player.exploding) {
                 player.explode();
             }
@@ -151,14 +148,14 @@ public class SpaceDriver {
     }
 
     //player
-    public class Rocket {
+    public class Player {
 
         int posX, posY, size;
         boolean exploding, destroyed;
         Image img;
         int explosionStep = 0;
 
-        public Rocket(int posX, int posY, int size,  Image image) {
+        public Player(int posX, int posY, int size, Image image) {
             this.posX = posX;
             this.posY = posY;
             this.size = size;
@@ -185,21 +182,18 @@ public class SpaceDriver {
             }
         }
 
-        public boolean colide(Rocket other) {
+        public boolean colide(Player other) {
             int d = distance(this.posX + size / 2, this.posY + size /2,
                     other.posX + other.size / 2, other.posY + other.size / 2);
             return d < other.size / 2 + this.size / 2 ;
         }
-
         public void explode() {
             exploding = true;
             explosionStep = -1;
         }
-
     }
-
     //computer player
-    public class Bomb extends Rocket {
+    public class Bomb extends Player {
 
         int SPEED = (score/5)+2;
 
@@ -243,7 +237,7 @@ public class SpaceDriver {
             }
         }
 
-        public boolean collide (Rocket Rocket) {
+        public boolean collide (Player Rocket) {
             int distance = distance(this.posX + size / 2, this.posY + size / 2,
                     Rocket.posX + Rocket.size / 2, Rocket.posY + Rocket.size / 2);
             return distance  < Rocket.size / 2 + size / 2;

@@ -23,7 +23,7 @@ public class GameStageController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        characterName.setText(CharacterSelectionController.chosenCharacter.toString());
+        characterName.setText(SpaceDriver.chosenCharacter.toString());
 
         SpaceDriver gameDriver = new SpaceDriver();
         Canvas gameScene = gameDriver.initializeGameScene();
