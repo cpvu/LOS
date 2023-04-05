@@ -15,6 +15,14 @@ import src.los.common.PlayerClass;
 import src.los.game.Player;
 
 import java.io.IOException;
+
+/**
+ * The SceneController class manages the different scenes and stages of the game. It controls the creation of the
+ * main menu and character selection screens, as well as the game stage. It also provides methods to switch between
+ * different scenes and to create and set the backgrounds for each scene.
+ * @author Calvin Vu & Hanxiao Mao
+ * @version 1.0
+ */
 public class SceneController {
     private static final int GAME_WIDTH = 700;
     private static final int GAME_HEIGHT = 500;
@@ -36,6 +44,12 @@ public class SceneController {
         mainMenu = createMainMenu();
     }
 
+    /**
+     * Returns the instance of the SceneController class, creating a new instance if one does not exist.
+     *
+     * @return The instance of the SceneController class.
+     * @throws IOException If there is an error creating the instance.
+     */
     public static SceneController getInstance() throws IOException {
         if (instance == null) {
             instance = new SceneController();
@@ -43,6 +57,13 @@ public class SceneController {
         return instance;
     }
 
+    /**
+     * Sets the background of the scene using the specified scene type.
+     *
+     * @param sceneBackground The AnchorPane that the background should be set on.
+     * @param sceneType The type of scene that the background should be set for.
+     * @throws RuntimeException If there is no background image found for the specified scene type.
+     */
     public void createBackground(AnchorPane sceneBackground, String sceneType) {
         String imageString;
 
@@ -66,10 +87,12 @@ public class SceneController {
         sceneBackground.setBackground(new Background(backgroundImage));
     }
 
+    //Creates the character selection scene by loading the FXML file.
     private Scene createCharacterSelection() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Player.class.getResource("characterSelection.fxml"));
         return new Scene(fxmlLoader.load());
     }
+
     private Scene createMainMenu() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Player.class.getResource("mainMenu.fxml"));
         Scene menu = new Scene(fxmlLoader.load());
@@ -81,6 +104,10 @@ public class SceneController {
         return menu;
     }
 
+    /**
+     * Creates the game stage scene by loading the FXML file and setting the background.
+     * @throws IOException if an error occurs while loading the FXML file.
+     */
     public void createGameStage() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Player.class.getResource("gameStage.fxml"));
         Scene gameScene = new Scene(fxmlLoader.load());
@@ -94,16 +121,25 @@ public class SceneController {
 
     }
 
+    /**
+     *Shows the main menu scene on the current stage.
+     */
     public void showMainMenu() {
         currentStage.setScene(mainMenu);
         currentStage.show();
     }
 
+    /**
+     * Shows the character selection scene on the current stage.
+     */
     public void showCharacterSelect() {
         currentStage.setScene(characterSelection);
         currentStage.show();
     }
 
+    /**
+     * Shows the game stage scene on the current stage.
+     */
     public void showGameStage() {
         currentStage.setScene(gameStage);
         currentStage.show();

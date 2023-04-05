@@ -4,7 +4,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 
-
+/**
+ * This class represents a player in a game.
+ * @author Calvin Vu & Hanxiao Mao
+ * @version 1.0
+ */
 public class Player {
     static final int EXPLOSION_STEPS = 10;
     static final Image DEAD_IMG = new Image("dead.png");
@@ -23,15 +27,25 @@ public class Player {
         img = image;
     }
 
+    /**
+     * Creates a new shot object from the player's current position.
+     * @return The new shot object.
+     */
     public Shot shoot() {
         return new Shot(posX + size / 2 - Shot.size / 2, posY - Shot.size);
     }
 
+    /**
+     * Updates the player's state.
+     */
     public void update() {
         if(exploding) explosionStep++;
         destroyed = explosionStep > EXPLOSION_STEPS;
     }
 
+    /**
+     * Draws the player on a canvas.
+     */
     public void draw() {
         Canvas canvas = new Canvas(800, 600);
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -49,6 +63,11 @@ public class Player {
         return (int) Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
     }
 
+    /**
+     * Determines whether this player has collided with another player.
+     * @param other The other player to check for collision with.
+     * @return a boolean represent whether this player has collided with another player
+     */
     public boolean colide(Player other) {
         int d = distance(this.posX + size / 2, this.posY + size /2,
                 other.posX + other.size / 2, other.posY + other.size / 2);

@@ -13,13 +13,6 @@ public class MainMenuController {
 
     public void startButton(ActionEvent actionEvent) throws IOException {
         SceneController.getInstance().showCharacterSelect();
-//        FXMLLoader fxmlLoader = new FXMLLoader(mainMenu.class.getResource("characterSelection.fxml"));
-//        Scene scene = new Scene(fxmlLoader.load());
-//        stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-//        stage.setTitle("Shinobi Invaders");
-//        stage.setScene(scene);
-//        stage.setResizable(false);
-//        stage.show();
     }
 
     public void quitGame(ActionEvent event) {

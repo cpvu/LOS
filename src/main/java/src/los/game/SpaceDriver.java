@@ -22,6 +22,11 @@ import src.los.common.PlayerClass;
 import src.los.controller.SceneController;
 import javafx.scene.Scene;
 
+/**
+ * A class contain main game logic
+ * @author Calvin Vu & Hanxiao Mao
+ * @version 1.0
+ */
 public class SpaceDriver {
     //variables
     private static final Random RAND = new Random();
@@ -65,7 +70,12 @@ public class SpaceDriver {
     @FXML
     Label scoreLabel;
 
-    //start
+    /**
+     * Creates a new Canvas object with a specified width and height, and sets the GraphicsContext2D object to the
+     * canvas object, creates a Timeline object with an indefinite cycle count,
+     * and sets the cursor to move and the mouse listener to register the mouse movement and mouse click events.
+     * @return Returns a Canvas object that represents the game scene.
+     */
     public Canvas initializeGameScene() {
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -90,7 +100,10 @@ public class SpaceDriver {
         setup();
         return canvas;
     }
-    //setup the game
+
+    /**
+     * Create all the necessary data structure to hold the objects for the game
+     */
     private void setup() {
         univ = new ArrayList<>();
         shots = new ArrayList<>();
@@ -100,13 +113,14 @@ public class SpaceDriver {
         IntStream.range(0, MAX_BOMBS).mapToObj(i -> this.newBomb()).forEach(Bombs::add);
     }
 
+    // update the score
     private void updateScore(int score) throws IOException {
         Scene gameStage = SceneController.getInstance().gameStage;
         scoreLabel = (Label) gameStage.lookup("#scoreLabel");
         scoreLabel.setText("" + score);
     }
 
-    //run Graphics
+    //run Graphics according to the status
     private void run(GraphicsContext gc) throws IOException {
         gc.clearRect(0, 0, WIDTH, HEIGHT);
         gc.setFill(Color.TRANSPARENT);

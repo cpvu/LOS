@@ -12,11 +12,16 @@ import src.los.game.SpaceDriver;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * The GameStageController class is responsible for controlling the game stage view of the application.
+ *
+ * It implements the Initializable interface after its root element has been completely processed.
+ * @author Calvin Vu & Hanxiao Mao
+ * @version 1.0
+ */
 public class GameStageController implements Initializable {
     @FXML
     public Label characterName;
-    @FXML
-    public Label level;
 
     @FXML
     public StackPane gamePane;
@@ -28,10 +33,11 @@ public class GameStageController implements Initializable {
         this.gamePane.getChildren().add(gamePane);
     }
 
-    public void setLevel(String message){
-        level.setText(message);
-    }
-
+    /**
+     * Initializes the controller after its root element has been completely processed.
+     * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle The resource bundle used to localize the root object, or null if the root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         characterName.setText(SpaceDriver.chosenCharacter.toString());
