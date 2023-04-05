@@ -62,6 +62,9 @@ public class SpaceDriver {
     private double mouseX;
     private int score;
 
+    @FXML
+    Label scoreLabel;
+
     //start
     public Canvas initializeGameScene() {
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
