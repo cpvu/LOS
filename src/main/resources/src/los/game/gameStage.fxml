@@ -11,7 +11,7 @@
          <children>
             <Label fx:id="characterName" alignment="CENTER" layoutX="19.0" layoutY="15.0" prefHeight="32.0" prefWidth="128.0" text="CharacterName" textAlignment="CENTER" />
             <ImageView fitHeight="49.0" fitWidth="107.0" layoutX="114.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
-            <Label layoutX="497.0" layoutY="22.0" text="Current Level" />
+            <Label fx:id="level" layoutX="497.0" layoutY="22.0" text="Current Level" />
          </children>
       </AnchorPane>
       <StackPane fx:id="gamePane" prefHeight="405.0" prefWidth="660.0" />
