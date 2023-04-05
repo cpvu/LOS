@@ -3,6 +3,7 @@ package src.los.game;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -18,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
+import src.los.common.MapStages;
 import src.los.common.PlayerClass;
 import src.los.controller.SceneController;
 import javafx.scene.Scene;
@@ -26,7 +28,7 @@ public class SpaceDriver {
     //variables
     private static final Random RAND = new Random();
     public static PlayerClass chosenCharacter;
-    public static int currentLevel; // either make this into an enum class or..
+    public static MapStages currentLevel = MapStages.LEVEL_ONE;
     private static final int WIDTH = 700;
     private static final int HEIGHT = 370;
     private static final int PLAYER_SIZE = 60;
@@ -37,6 +39,7 @@ public class SpaceDriver {
     static final int EXPLOSION_COL = 4;
     static final int EXPLOSION_H = 128;
     static final int EXPLOSION_STEPS = 15;
+    public static Timeline gameTimeline;
 
     static final Image BOMBS_IMG[] = {
             new Image("Enemy2.png"),
@@ -63,27 +66,42 @@ public class SpaceDriver {
     public Canvas initializeGameScene() {
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> {
+        gameTimeline = new Timeline(new KeyFrame(Duration.millis(100), e -> {
             try {
                 run(gc);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+        gameTimeline.setCycleCount(Timeline.INDEFINITE);
+        gameTimeline.play();
         canvas.setCursor(Cursor.MOVE);
         canvas.setOnMouseMoved(e -> mouseX = e.getY());
         canvas.setOnMouseClicked(e -> {
             if(shots.size() < MAX_SHOTS) shots.add(player.shoot());
             if(gameOver) {
                 gameOver = false;
+                score = 0;
+                currentLevel = MapStages.LEVEL_ONE;
+                try {
+                    SceneController.getInstance().loadGameBg(currentLevel);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
                 setup();
             }
         });
         setup();
         return canvas;
     }
+
+    public void startNewStage() {
+        Bombs.clear();
+        shots.clear();
+        gameTimeline.playFromStart();
+        addBombs();
+    }
+
     //setup the game
     private void setup() {
         univ = new ArrayList<>();
@@ -91,7 +109,10 @@ public class SpaceDriver {
         Bombs = new ArrayList<>();
         PLAYER_IMG = new Image(chosenCharacter.getBaseImage());
         player = new Player(0, HEIGHT / 2, PLAYER_SIZE, PLAYER_IMG);
-        score = 0;
+        addBombs();
+    }
+
+    private void addBombs() {
         IntStream.range(0, MAX_BOMBS).mapToObj(i -> this.newBomb()).forEach(Bombs::add);
     }
 
@@ -118,6 +139,7 @@ public class SpaceDriver {
             gc.fillText("Game Over \n Your Score is: " + score + " \n Click to play again", WIDTH / 2, HEIGHT /2.5);
             //	return;
         }
+
         univ.forEach(Universe::draw);
 
         player.update();
@@ -160,6 +182,25 @@ public class SpaceDriver {
         for (int i = 0; i < univ.size(); i++) {
             if(univ.get(i).posY > HEIGHT)
                 univ.remove(i);
+        }
+
+        if (score >= currentLevel.getNumberOfEnemies()) {
+            gc.clearRect(0, 0, WIDTH, HEIGHT);
+            gc.setFill(Color.WHITE);
+            gc.fillRect(0, 0, WIDTH, HEIGHT);
+
+            switch (currentLevel) {
+                case LEVEL_ONE:
+                    currentLevel = MapStages.LEVEL_TWO;
+                    break;
+                case LEVEL_TWO:
+                    currentLevel = MapStages.LEVEL_THREE;
+                    break;
+            }
+            gameTimeline.stop();
+            SceneController.getInstance().showDialogue(currentLevel);
+            SceneController.getInstance().loadGameBg(currentLevel);
+            startNewStage();
         }
     }
 
@@ -294,7 +335,7 @@ public class SpaceDriver {
 
 
     Bomb newBomb() {
-        return new Bomb(50 + RAND.nextInt(WIDTH - 100), 50 + RAND.nextInt(HEIGHT - 100), PLAYER_SIZE, BOMBS_IMG[RAND.nextInt(BOMBS_IMG.length)]);
+        return new Bomb(600 + RAND.nextInt(WIDTH - 200), 20 + RAND.nextInt(HEIGHT - 30), PLAYER_SIZE, BOMBS_IMG[RAND.nextInt(BOMBS_IMG.length)]);
     }
 
     int distance(int x1, int y1, int x2, int y2) {
