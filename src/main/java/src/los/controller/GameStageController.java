@@ -20,6 +20,10 @@ public class GameStageController implements Initializable {
 
     @FXML
     public StackPane gamePane;
+
+    @FXML
+    public Label scoreLabel;
+
     private void setGamePane (Canvas gamePane) {
         this.gamePane.getChildren().add(gamePane);
     }
@@ -27,10 +31,10 @@ public class GameStageController implements Initializable {
     public void setLevel(String message){
         level.setText(message);
     }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         characterName.setText(SpaceDriver.chosenCharacter.toString());
-
         SpaceDriver gameDriver = new SpaceDriver();
         Canvas gameScene = gameDriver.initializeGameScene();
         setGamePane(gameScene);
