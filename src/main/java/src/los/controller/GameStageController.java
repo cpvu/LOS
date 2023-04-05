@@ -15,11 +15,17 @@ import java.util.ResourceBundle;
 public class GameStageController implements Initializable {
     @FXML
     public Label characterName;
+    @FXML
+    public Label level;
 
     @FXML
     public StackPane gamePane;
     private void setGamePane (Canvas gamePane) {
         this.gamePane.getChildren().add(gamePane);
+    }
+
+    public void setLevel(String message){
+        level.setText(message);
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

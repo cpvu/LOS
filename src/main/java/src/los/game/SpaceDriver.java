@@ -38,9 +38,6 @@ public class SpaceDriver {
     static final int EXPLOSION_H = 128;
     static final int EXPLOSION_STEPS = 15;
 
-    @FXML
-    Label scoreLabel;
-
     static final Image BOMBS_IMG[] = {
             new Image("dead.png"),
             new Image("file:./images/2.png"),
