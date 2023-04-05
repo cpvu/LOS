@@ -1,14 +1,8 @@
 package src.los.controller;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import src.los.common.PlayerClass;
@@ -69,10 +63,10 @@ public class SceneController {
 
         switch (sceneType) {
             case "game":
-                imageString = "bg1.png";
+                imageString = "gameStageBgOne.png";
                 break;
             case "menu":
-                imageString = "gamebg.png";
+                imageString = "mainMenuBg.png";
                 break;
             default:
                 throw new RuntimeException("No background image found");

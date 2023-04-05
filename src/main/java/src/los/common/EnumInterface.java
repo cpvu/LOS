@@ -11,6 +11,7 @@ public interface EnumInterface {
      * @return the name of the character as a String.
      */
     public String getCharacterName();
+    public String getBaseImage();
 
     /**
      * Returns the path of the character image.
@@ -23,4 +24,5 @@ public interface EnumInterface {
      * @return the special ability of the character as a String.
      */
     public String getCharacterAbility();
+    public String getDeadImage();
 }

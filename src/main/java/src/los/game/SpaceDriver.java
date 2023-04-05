@@ -33,27 +33,21 @@ public class SpaceDriver {
     public static PlayerClass chosenCharacter;
     public static int currentLevel; // either make this into an enum class or..
     private static final int WIDTH = 700;
-    private static final int HEIGHT = 390;
+    private static final int HEIGHT = 370;
     private static final int PLAYER_SIZE = 60;
-    public final Image PLAYER_IMG = new Image(chosenCharacter.getImage());
-    static final Image EXPLOSION_IMG = new Image("file:./images/explosion.png");
+    public Image PLAYER_IMG = new Image(chosenCharacter.getBaseImage());
+    public final Image EXPLOSION_IMG = new Image(chosenCharacter.getDeadImage());
     static final int EXPLOSION_W = 128;
-    static final int EXPLOSION_ROWS = 3;
-    static final int EXPLOSION_COL = 3;
+    static final int EXPLOSION_ROWS = 4;
+    static final int EXPLOSION_COL = 4;
     static final int EXPLOSION_H = 128;
     static final int EXPLOSION_STEPS = 15;
 
     static final Image BOMBS_IMG[] = {
-            new Image("dead.png"),
-            new Image("file:./images/2.png"),
-            new Image("file:./images/3.png"),
-            new Image("file:./images/4.png"),
-            new Image("file:./images/5.png"),
-            new Image("file:./images/6.png"),
-            new Image("file:./images/7.png"),
-            new Image("file:./images/8.png"),
-            new Image("file:./images/9.png"),
-            new Image("file:./images/10.png"),
+            new Image("Enemy2.png"),
+            new Image("Enemy1.png"),
+            new Image("Enemy3.png"),
+            new Image("file:./images/4.png")
     };
     final int MAX_BOMBS = 10,  MAX_SHOTS = MAX_BOMBS * 2;
     boolean gameOver = false;
@@ -108,6 +102,7 @@ public class SpaceDriver {
         univ = new ArrayList<>();
         shots = new ArrayList<>();
         Bombs = new ArrayList<>();
+        PLAYER_IMG = new Image(chosenCharacter.getBaseImage());
         player = new Player(0, HEIGHT / 2, PLAYER_SIZE, PLAYER_IMG);
         score = 0;
         IntStream.range(0, MAX_BOMBS).mapToObj(i -> this.newBomb()).forEach(Bombs::add);
@@ -128,7 +123,6 @@ public class SpaceDriver {
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setFont(Font.font(20));
         gc.setFill(Color.WHITE);
-        gc.fillText("Score: " + score, 60,  20);
 
         updateScore(score);
 
@@ -209,9 +203,7 @@ public class SpaceDriver {
 
         public void draw() {
             if(exploding) {
-                gc.drawImage(EXPLOSION_IMG, explosionStep % EXPLOSION_COL * EXPLOSION_W, (explosionStep / EXPLOSION_ROWS) * EXPLOSION_H + 1,
-                        EXPLOSION_W, EXPLOSION_H,
-                        posX, posY, size, size);
+                gc.drawImage(EXPLOSION_IMG,posX, posY, size, size);
             }
             else {
                 gc.drawImage(img, posX, posY, size, size);
@@ -223,8 +215,15 @@ public class SpaceDriver {
             return d < other.size / 2 + this.size / 2 ;
         }
         public void explode() {
-            exploding = true;
-            explosionStep = -1;
+
+            Timeline dieAnimation = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
+                exploding = true;
+                explosionStep = -1;
+
+                PLAYER_IMG = EXPLOSION_IMG;
+            }));
+
+            dieAnimation.play();
         }
     }
     //computer player
@@ -309,7 +308,7 @@ public class SpaceDriver {
 
 
     Bomb newBomb() {
-        return new Bomb(50 + RAND.nextInt(WIDTH - 100), 50 + RAND.nextInt(WIDTH - 100), PLAYER_SIZE, BOMBS_IMG[RAND.nextInt(BOMBS_IMG.length)]);
+        return new Bomb(50 + RAND.nextInt(WIDTH - 100), 50 + RAND.nextInt(HEIGHT - 100), PLAYER_SIZE, BOMBS_IMG[RAND.nextInt(BOMBS_IMG.length)]);
     }
 
     int distance(int x1, int y1, int x2, int y2) {
