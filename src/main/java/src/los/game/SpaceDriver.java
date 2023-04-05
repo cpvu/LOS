@@ -19,7 +19,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import src.los.common.PlayerClass;
-import src.los.controller.GameStageController;
 import src.los.controller.SceneController;
 import javafx.scene.Scene;
 
@@ -38,9 +37,6 @@ public class SpaceDriver {
     static final int EXPLOSION_COL = 3;
     static final int EXPLOSION_H = 128;
     static final int EXPLOSION_STEPS = 15;
-
-    @FXML
-    Label scoreLabel;
 
     static final Image BOMBS_IMG[] = {
             new Image("dead.png"),
