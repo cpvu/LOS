@@ -1,28 +1,35 @@
 package src.los.game;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import src.los.common.PlayerClass;
+import src.los.controller.GameStageController;
+import src.los.controller.SceneController;
+import javafx.scene.Scene;
 
 public class SpaceDriver {
     //variables
     private static final Random RAND = new Random();
     public static PlayerClass chosenCharacter;
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 300;
+    public static int currentLevel; // either make this into an enum class or..
+    private static final int WIDTH = 700;
+    private static final int HEIGHT = 390;
     private static final int PLAYER_SIZE = 60;
     public final Image PLAYER_IMG = new Image(chosenCharacter.getImage());
     static final Image EXPLOSION_IMG = new Image("file:./images/explosion.png");
@@ -32,6 +39,8 @@ public class SpaceDriver {
     static final int EXPLOSION_H = 128;
     static final int EXPLOSION_STEPS = 15;
 
+    @FXML
+    Label scoreLabel;
 
     static final Image BOMBS_IMG[] = {
             new Image("dead.png"),
@@ -61,7 +70,13 @@ public class SpaceDriver {
     public Canvas initializeGameScene() {
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> run(gc)));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> {
+            try {
+                run(gc);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         canvas.setCursor(Cursor.MOVE);
@@ -85,15 +100,24 @@ public class SpaceDriver {
         score = 0;
         IntStream.range(0, MAX_BOMBS).mapToObj(i -> this.newBomb()).forEach(Bombs::add);
     }
+
+    private void updateScore(int score) throws IOException {
+        Scene gameStage = SceneController.getInstance().gameStage;
+        scoreLabel = (Label) gameStage.lookup("#scoreLabel");
+        scoreLabel.setText("" + score);
+    }
+
     //run Graphics
-    private void run(GraphicsContext gc) {
-        gc.setFill(Color.grayRgb(20));
+    private void run(GraphicsContext gc) throws IOException {
+        gc.clearRect(0, 0, WIDTH, HEIGHT);
+        gc.setFill(Color.TRANSPARENT);
         gc.fillRect(0, 0, WIDTH, HEIGHT);
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setFont(Font.font(20));
         gc.setFill(Color.WHITE);
         gc.fillText("Score: " + score, 60,  20);
 
+        updateScore(score);
 
         if(gameOver) {
             gc.setFont(Font.font(35));
@@ -112,7 +136,6 @@ public class SpaceDriver {
                 player.explode();
             }
         });
-
 
         for (int i = shots.size() - 1; i >=0 ; i--) {
             Shot shot = shots.get(i);
@@ -181,7 +204,6 @@ public class SpaceDriver {
                 gc.drawImage(img, posX, posY, size, size);
             }
         }
-
         public boolean colide(Player other) {
             int d = distance(this.posX + size / 2, this.posY + size /2,
                     other.posX + other.size / 2, other.posY + other.size / 2);
@@ -225,15 +247,14 @@ public class SpaceDriver {
             posX+=speed;
         }
 
-
         public void draw() {
-            gc.setFill(Color.RED);
+            gc.drawImage(new Image(chosenCharacter.getCharacterAbility()), posX , posY);
             if (score >=50 && score<=70 || score>=120) {
                 gc.setFill(Color.YELLOWGREEN);
                 speed = 50;
                 gc.fillRect(posX-5, posY-10, size+10, size+30);
             } else {
-                gc.fillOval(posX, posY, size, size);
+                gc.drawImage(new Image(chosenCharacter.getCharacterAbility()), posX , posY);
             }
         }
 
