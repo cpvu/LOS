@@ -1,10 +1,17 @@
 package src.los.common;
 
-/**
- * Enum class that has three level.
- * @author Calvin Vu & Hanxiao Mao
- * @version 1.0
- */
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public enum MapStages {
-    LEVEL_ONE, LEVEL_TWO, LEVEL_THREE;
+    LEVEL_ONE(10), LEVEL_TWO (30), LEVEL_THREE(1);
+
+    private int numberOfEnemies;
+    MapStages(int numberOfEnemies) {
+        this.numberOfEnemies = numberOfEnemies;
+    }
+
+    public int getNumberOfEnemies() {
+        return this.numberOfEnemies;
+    }
 }
