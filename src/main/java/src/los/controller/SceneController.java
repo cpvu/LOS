@@ -5,10 +5,13 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import src.los.common.MapStages;
 import src.los.common.PlayerClass;
 import src.los.game.Player;
 
 import java.io.IOException;
+import java.util.Iterator;
+
 public class SceneController {
     private static final int GAME_WIDTH = 700;
     private static final int GAME_HEIGHT = 500;
@@ -17,8 +20,9 @@ public class SceneController {
     private final Scene mainMenu;
     private final Scene characterSelection;
     public Scene gameStage;
-    public static PlayerClass chosenCharacter;
 
+    public Scene dialogueScene;
+    public static PlayerClass chosenCharacter;
     public SceneController() throws IOException {
         currentStage = new Stage();
         currentStage.setTitle("Legend of Shinobi");
@@ -28,6 +32,7 @@ public class SceneController {
 
         characterSelection = createCharacterSelection();
         mainMenu = createMainMenu();
+        dialogueScene = createDialogue();
     }
 
     public static SceneController getInstance() throws IOException {
@@ -46,6 +51,12 @@ public class SceneController {
                 break;
             case "menu":
                 imageString = "mainMenuBg.png";
+                break;
+            case "LEVEL_ONE":
+                imageString = "gameStageBgOne.png";
+                break;
+            case "LEVEL_TWO":
+                imageString = "bgLevelTwo.png";
                 break;
             default:
                 throw new RuntimeException("No background image found");
@@ -69,7 +80,6 @@ public class SceneController {
         Scene menu = new Scene(fxmlLoader.load());
 
         AnchorPane sceneBackground = (AnchorPane) menu.lookup("#menu");
-
         createBackground(sceneBackground, "menu");
 
         return menu;
@@ -78,14 +88,28 @@ public class SceneController {
     public void createGameStage() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Player.class.getResource("gameStage.fxml"));
         Scene gameScene = new Scene(fxmlLoader.load());
-        AnchorPane sceneBackground = (AnchorPane) gameScene.lookup("#background");
 
+        AnchorPane sceneBackground = (AnchorPane) gameScene.lookup("#background");
         createBackground(sceneBackground, "game");
+
         this.gameStage = gameScene;
     }
 
-    public void loadNewLevel() {
+    public Scene createDialogue() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Player.class.getResource("dialogue.fxml"));
+        Scene dialogueScene = new Scene(fxmlLoader.load());
 
+        return dialogueScene;
+    }
+
+    public void showDialogue(MapStages currentLevel) {
+        currentStage.setScene(dialogueScene);
+        currentStage.show();
+    }
+
+    public void loadGameBg(MapStages currentLevel) {
+        AnchorPane sceneBackground = (AnchorPane) gameStage.lookup("#background");
+        createBackground(sceneBackground, String.valueOf(currentLevel));
     }
 
     public void showMainMenu() {
