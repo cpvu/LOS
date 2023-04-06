@@ -6,15 +6,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import src.los.common.MapStages;
 import src.los.common.PlayerClass;
-import src.los.game.Player;
 import src.los.game.SpaceDriver;
-
 import java.io.IOException;
-import java.util.Iterator;
 
 public class SceneController {
     private static final int GAME_WIDTH = 700;
@@ -78,11 +74,11 @@ public class SceneController {
     }
 
     private Scene createCharacterSelection() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Player.class.getResource("characterSelection.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SpaceDriver.Player.class.getResource("characterSelection.fxml"));
         return new Scene(fxmlLoader.load());
     }
     private Scene createMainMenu() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Player.class.getResource("mainMenu.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SpaceDriver.Player.class.getResource("mainMenu.fxml"));
         Scene menu = new Scene(fxmlLoader.load());
 
         AnchorPane sceneBackground = (AnchorPane) menu.lookup("#menu");
@@ -92,7 +88,7 @@ public class SceneController {
     }
 
     public void createGameStage() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Player.class.getResource("gameStage.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SpaceDriver.Player.class.getResource("gameStage.fxml"));
         Scene gameScene = new Scene(fxmlLoader.load());
 
         AnchorPane sceneBackground = (AnchorPane) gameScene.lookup("#background");
@@ -102,7 +98,7 @@ public class SceneController {
     }
 
     public void createDialogue() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Player.class.getResource("dialogue.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SpaceDriver.Player.class.getResource("dialogue.fxml"));
         Scene dialogueScene = new Scene(fxmlLoader.load());
 
        this.dialogueScene = dialogueScene;

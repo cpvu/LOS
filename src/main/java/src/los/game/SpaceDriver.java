@@ -22,7 +22,6 @@ import javafx.util.Duration;
 import src.los.common.MapStages;
 import src.los.common.PlayerClass;
 import src.los.controller.DialogueController;
-import src.los.controller.GameStageController;
 import src.los.controller.SceneController;
 import javafx.scene.Scene;
 
@@ -30,7 +29,7 @@ public class SpaceDriver {
     //variables
     private static final Random RAND = new Random();
     public static PlayerClass chosenCharacter;
-    public static MapStages currentLevel = MapStages.LEVEL_ONE;
+    public static MapStages currentLevel = MapStages.LEVEL_THREE;
     private static final int WIDTH = 700;
     private static final int HEIGHT = 370;
     private static final int PLAYER_SIZE = 60;
@@ -126,9 +125,7 @@ public class SpaceDriver {
         scoreLabel = (Label) gameStage.lookup("#scoreLabel");
         scoreLabel.setText("" + score);
     }
-    private void bossFight() {
 
-    }
     //run Graphics
     private void run(GraphicsContext gc) throws IOException {
         gc.clearRect(0, 0, WIDTH, HEIGHT);
@@ -157,12 +154,8 @@ public class SpaceDriver {
         if (currentLevel == MapStages.LEVEL_THREE) {
             Random rand = new Random();
             boss.draw();
-            boss.posY = boss.posY + rand.nextInt(-20, 20);
-            boss.bossAttackCounter += 1;
-
-            if (rand.nextInt(10) < 2) {
-                boss.bossBombs.add(boss.bossShot());
-            }
+            boss.posY = boss.posY + rand.nextInt(-40, 40);
+            boss.bossBombs.add(boss.bossShot());
 
             boss.bossBombs.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
                 if (player.colide(e) && !player.exploding) {
@@ -185,6 +178,7 @@ public class SpaceDriver {
                         shot.toRemove = true;
                     }
                 }
+
                 if (shot.collide(boss)) {
                     boss.bossHP -= 1;
                     shot.toRemove = true;
@@ -192,8 +186,7 @@ public class SpaceDriver {
             }
 
             if (boss.bossHP == 0) {
-                //SceneController.getInstance()
-                //Show Victory Scene.
+                System.out.println("Dead!!!1");
             }
             gameOver = player.destroyed;
         } else {
@@ -349,6 +342,7 @@ public class SpaceDriver {
         public Bomb(int posX, int posY, int size, Image image) {
             super(posX, posY, size, image);
         }
+
         public void update() {
             super.update();
             if(!exploding && !destroyed) posX -= SPEED;
