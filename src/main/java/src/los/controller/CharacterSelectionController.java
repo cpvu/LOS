@@ -30,8 +30,8 @@ public class CharacterSelectionController {
     }
 
     public void initializeGameStage () throws IOException {
-
         SceneController.getInstance().createGameStage();
         SceneController.getInstance().showGameStage();
+        SceneController.getInstance().createDialogue();
     }
 }
