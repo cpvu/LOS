@@ -106,7 +106,7 @@ public class SpaceDriver {
         univ = new ArrayList<>();
         shots = new ArrayList<>();
         Bombs = new ArrayList<>();
-        boss = new Boss(600, 200, PLAYER_SIZE, new Image("SasukeSprite.png"));
+        boss = new Boss(600, 100, PLAYER_SIZE, new Image("SasukeSprite.png"));
         PLAYER_IMG = new Image(chosenCharacter.getBaseImage());
         player = new Player(0, HEIGHT / 2, PLAYER_SIZE, PLAYER_IMG);
         addBombs();
@@ -134,9 +134,10 @@ public class SpaceDriver {
         updateScore(score);
 
         if(gameOver) {
-            gc.setFont(Font.font(35));
-            gc.setFill(Color.YELLOW);
-            gc.fillText("Game Over \n Your Score is: " + score + " \n Click to play again", WIDTH / 2, HEIGHT /2.5);
+            gc.setFont(Font.font(28));
+            gc.setFill(Color.BLACK);
+            gc.drawImage(new Image(chosenCharacter.getDialogueImage()), 100, 100);
+            gc.fillText("You've died.. \n Your Score is: " + score + " \n Click to play again", WIDTH / 2, HEIGHT / 2.5);
             //	return;
         }
 
@@ -149,12 +150,7 @@ public class SpaceDriver {
         if (currentLevel == MapStages.LEVEL_THREE) {
             Random rand = new Random();
             boss.draw();
-            if (boss.posY < 50) {
-                boss.posY = boss.posY + 10;
-            } else if (boss.posY > HEIGHT - 50) {
-                boss.posY = boss.posY - 10;
-            }
-            boss.posY = boss.posY + rand.nextInt(0,100) - 50;
+            boss.posY = boss.posY + rand.nextInt(-40, 40);
             boss.bossBombs.add(boss.bossShot());
 
             boss.bossBombs.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
@@ -171,7 +167,8 @@ public class SpaceDriver {
                 }
                 shot.update();
                 shot.draw();
-                for (Bomb bomb : Bombs) {
+
+                for (Boss.BossShots bomb : boss.bossBombs) {
                     if (shot.collide(bomb)) {
                         bomb.explode();
                         shot.toRemove = true;
@@ -187,6 +184,7 @@ public class SpaceDriver {
             if (boss.bossHP == 0) {
                 System.out.println("Dead!!!1");
             }
+            gameOver = player.destroyed;
         } else {
             Bombs.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
                 if (player.colide(e) && !player.exploding) {
@@ -252,6 +250,7 @@ public class SpaceDriver {
         int posX;
         int posY;
         int bossHP = 5;
+        int bossAttackCounter = 0;
         ArrayList<BossShots> bossBombs = new ArrayList<>();
 
         Image bossAttack = new Image("Fireball.png");
@@ -279,7 +278,7 @@ public class SpaceDriver {
         }
 
         public BossShots bossShot() {
-            return new BossShots(posX - 5, posY, 10, bossAttack);
+            return new BossShots(posX - 10, posY, 30 , bossAttack);
         }
     }
 
