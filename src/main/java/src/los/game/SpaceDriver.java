@@ -8,12 +8,14 @@ import java.util.Random;
 import java.util.stream.IntStream;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -40,7 +42,7 @@ public class SpaceDriver {
     public final Image PLAYER_DEAD = new Image(chosenCharacter.getDeadImage());
     static final int EXPLOSION_STEPS = 15;
     public static Timeline gameTimeline;
-
+    static ArrayList<String> enemyImages;
     static final Image ENEMIES_IMG[] = {
             new Image("Enemy2.png"),
             new Image("Enemy1.png"),
@@ -82,6 +84,21 @@ public class SpaceDriver {
         gameTimeline.play();
         canvas.setCursor(Cursor.MOVE);
         canvas.setOnMouseMoved(e -> mouseX = e.getY());
+        canvas.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                try {
+                    gameTimeline.stop();
+                    score = 0;
+                    SceneController.getInstance().showMainMenu();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                event.consume();
+            }
+        });
+        Platform.runLater(canvas::requestFocus);
+
+        canvas.requestFocus();
         canvas.setOnMouseClicked(e -> {
             if(shots.size() < MAX_SHOTS) shots.add(player.shoot());
             if(gameOver) {
@@ -115,6 +132,7 @@ public class SpaceDriver {
         univ = new ArrayList<>();
         shots = new ArrayList<>();
         Bombs = new ArrayList<>();
+        enemyImages = currentLevel.getEnemyImages();
         PLAYER_ALIVE = new Image(chosenCharacter.getBaseImage());
         boss = new Boss(600, HEIGHT / 2, PLAYER_SIZE + 20, new Image("Boss.png"));
         player = new Player(0, HEIGHT / 2, PLAYER_SIZE, PLAYER_ALIVE);
@@ -271,9 +289,11 @@ public class SpaceDriver {
                 switch (currentLevel) {
                     case LEVEL_ONE:
                         currentLevel = MapStages.LEVEL_TWO;
+                        enemyImages = currentLevel.getEnemyImages();
                         break;
                     case LEVEL_TWO:
                         currentLevel = MapStages.LEVEL_THREE;
+                        enemyImages = currentLevel.getEnemyImages();
                         break;
                 }
                 gameTimeline.stop();
@@ -546,7 +566,13 @@ public class SpaceDriver {
      * @return enemy object
      */
     Bomb newBomb() {
-        return new Bomb(600 + RAND.nextInt(WIDTH - 200), 20 + RAND.nextInt(HEIGHT - 30), PLAYER_SIZE, ENEMIES_IMG[RAND.nextInt(ENEMIES_IMG.length)]);
+        int enemyImageSize = enemyImages.size();
+        int randomizer = RAND.nextInt(enemyImageSize);
+
+        return new Bomb(600 + RAND.nextInt(WIDTH - 200),
+                20 + RAND.nextInt(HEIGHT - 30),
+                PLAYER_SIZE,
+                new Image (enemyImages.get(randomizer)));
     }
 
     /**
