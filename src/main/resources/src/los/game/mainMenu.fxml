@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="menu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.los.controller.MainMenuController">
+<AnchorPane id="menu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" stylesheets="@../../../styles/mainMenu.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.los.controller.MainMenuController">
    <children>
       <GridPane layoutX="60.0" layoutY="60.0" prefHeight="394.0" prefWidth="579.0">
         <columnConstraints>
@@ -23,12 +23,12 @@
           <RowConstraints maxHeight="281.0" minHeight="10.0" prefHeight="140.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Legend of Shinobi" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Text id="title" strokeType="OUTSIDE" strokeWidth="0.0" text="Legend of Shinobi" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="39.0" />
                </font>
             </Text>
-            <Button fx:id="quit" mnemonicParsing="false" onAction="#quitGame" text="Quit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <Button styleClass="button" fx:id="quit" mnemonicParsing="false" onAction="#quitGame" text="Quit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <padding>
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                </padding>
@@ -36,7 +36,7 @@
                   <Insets bottom="20.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="start" mnemonicParsing="false" onAction="#startButton" text="Play" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Button styleClass="button" fx:id="start" mnemonicParsing="false" onAction="#startButton" text="Play" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets bottom="40.0" />
                </GridPane.margin>

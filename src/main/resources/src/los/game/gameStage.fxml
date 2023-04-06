@@ -12,24 +12,24 @@
    <children>
       <AnchorPane id="userInterface" layoutY="405.0" prefHeight="95.0" prefWidth="700.0" stylesheets="@../../../styles/gameStage.css">
          <children>
-            <Label fx:id="characterName" layoutX="68.0" layoutY="6.0" prefHeight="28.0" prefWidth="115.0" text="Naruto" />
-            <Label fx:id="level" layoutX="303.0" layoutY="-10.0" prefHeight="70.0" prefWidth="120.0" text="Current Level">
+            <Label id="name-label" fx:id="characterName" layoutX="83.0" layoutY="4.0" prefHeight="28.0" prefWidth="115.0" text="Naruto" />
+            <Label fx:id="level" layoutX="290.0" layoutY="-5.0" prefHeight="66.0" prefWidth="277.0" text="Current Level">
                <font>
-                  <Font size="26.0" />
+                  <Font name="Ninja Naruto" size="26.0" />
                </font></Label>
-            <Text layoutX="69.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score:" wrappingWidth="52.018218994140625">
+            <Text layoutX="80.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score:" wrappingWidth="90.4181137084961">
                <font>
-                  <Font size="17.0" />
+                  <Font name="Boruto" size="28.0" />
                </font>
             </Text>
-            <Label fx:id="scoreLabel" layoutX="121.0" layoutY="35.0" text="0">
+            <Label fx:id="scoreLabel" layoutX="171.0" layoutY="32.0" text="0">
                <font>
-                  <Font size="22.0" />
+                  <Font name="Boruto" size="31.0" />
                </font>
             </Label>
-            <ImageView fx:id="characterPortrait" fitHeight="57.0" fitWidth="63.0" layoutX="6.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="characterPortrait" fitHeight="71.0" fitWidth="66.0" layoutX="1.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image  url="@../../../narutoPortrait.png" />
+                  <Image url="@../../../narutoPortrait.png" />
                </image>
             </ImageView>
          </children>

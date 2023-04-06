@@ -17,9 +17,6 @@ public class DialogueController implements Initializable  {
     @FXML
     public Text textDialogue;
 
-    public DialogueController() throws IOException {
-    }
-
     public void setCharPortrait() {
         charPortrait.setImage(new Image(SpaceDriver.chosenCharacter.getDialogueImage()));
     }
