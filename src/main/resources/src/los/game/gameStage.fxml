@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
@@ -11,21 +12,28 @@
    <children>
       <AnchorPane id="userInterface" layoutY="405.0" prefHeight="95.0" prefWidth="700.0" stylesheets="@../../../styles/gameStage.css">
          <children>
-            <Label fx:id="characterName" alignment="CENTER" layoutX="-2.0" layoutY="7.0" prefHeight="32.0" prefWidth="128.0" text="CharacterName" textAlignment="CENTER" />
-            <ImageView fitHeight="49.0" fitWidth="107.0" layoutX="114.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
-            <Label layoutX="556.0" layoutY="13.0" text="Current Level" />
-            <Text layoutX="310.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score:" wrappingWidth="52.018218994140625">
+            <Label fx:id="characterName" layoutX="68.0" layoutY="6.0" prefHeight="28.0" prefWidth="115.0" text="Naruto" />
+            <Label fx:id="level" layoutX="303.0" layoutY="-10.0" prefHeight="70.0" prefWidth="120.0" text="Current Level">
+               <font>
+                  <Font size="26.0" />
+               </font></Label>
+            <Text layoutX="69.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score:" wrappingWidth="52.018218994140625">
                <font>
                   <Font size="17.0" />
                </font>
             </Text>
-            <Label fx:id="scoreLabel" layoutX="367.0" layoutY="26.0" text="0">
+            <Label fx:id="scoreLabel" layoutX="121.0" layoutY="35.0" text="0">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
+            <ImageView fitHeight="57.0" fitWidth="63.0" layoutX="6.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../narutoPortrait.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
-      <StackPane fx:id="gamePane" prefHeight="405.0" prefWidth="660.0" />
+      <StackPane fx:id="gamePane" layoutX="-2.0" layoutY="5.0" prefHeight="405.0" prefWidth="660.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>

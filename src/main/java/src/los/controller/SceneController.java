@@ -2,12 +2,16 @@ package src.los.controller;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import src.los.common.MapStages;
 import src.los.common.PlayerClass;
 import src.los.game.Player;
+import src.los.game.SpaceDriver;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -32,7 +36,6 @@ public class SceneController {
 
         characterSelection = createCharacterSelection();
         mainMenu = createMainMenu();
-        dialogueScene = createDialogue();
     }
 
     public static SceneController getInstance() throws IOException {
@@ -56,6 +59,9 @@ public class SceneController {
                 imageString = "gameStageBgOne.png";
                 break;
             case "LEVEL_TWO":
+                imageString = "bgLevelTwo.png";
+                break;
+            case "LEVEL_THREE":
                 imageString = "bgLevelTwo.png";
                 break;
             default:
@@ -95,14 +101,27 @@ public class SceneController {
         this.gameStage = gameScene;
     }
 
-    public Scene createDialogue() throws IOException {
+    public void createDialogue() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Player.class.getResource("dialogue.fxml"));
         Scene dialogueScene = new Scene(fxmlLoader.load());
 
-        return dialogueScene;
+       this.dialogueScene = dialogueScene;
     }
 
-    public void showDialogue(MapStages currentLevel) {
+   private String generateDialogue() {
+        if (SpaceDriver.chosenCharacter == PlayerClass.NARUTO) {
+            return "Dattebayo! That was tough, I need to find Sasuke!";
+        }
+        return "That was nothing.";
+    }
+
+    public void showDialogue(MapStages currentLevel) throws IOException {
+        Text dialogueText = (Text) dialogueScene.getRoot().lookup("#textDialogue");
+        dialogueText.setText(generateDialogue());
+
+        Label text = (Label) gameStage.getRoot().lookup("#level");
+        text.setText(String.valueOf(SpaceDriver.currentLevel.getLevelName()));
+
         currentStage.setScene(dialogueScene);
         currentStage.show();
     }

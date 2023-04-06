@@ -53,8 +53,8 @@ public class CharacterSelectionController {
      * @throws IOException if there is an I/O error
      */
     public void initializeGameStage () throws IOException {
-
         SceneController.getInstance().createGameStage();
         SceneController.getInstance().showGameStage();
+        SceneController.getInstance().createDialogue();
     }
 }

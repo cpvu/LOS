@@ -21,6 +21,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import src.los.common.MapStages;
 import src.los.common.PlayerClass;
+import src.los.controller.DialogueController;
 import src.los.controller.SceneController;
 import javafx.scene.Scene;
 
@@ -28,7 +29,7 @@ public class SpaceDriver {
     //variables
     private static final Random RAND = new Random();
     public static PlayerClass chosenCharacter;
-    public static MapStages currentLevel = MapStages.LEVEL_ONE;
+    public static MapStages currentLevel = MapStages.LEVEL_THREE;
     private static final int WIDTH = 700;
     private static final int HEIGHT = 370;
     private static final int PLAYER_SIZE = 60;
@@ -47,11 +48,13 @@ public class SpaceDriver {
             new Image("Enemy3.png"),
             new Image("file:./images/4.png")
     };
+
     final int MAX_BOMBS = 10,  MAX_SHOTS = MAX_BOMBS * 2;
     boolean gameOver = false;
     private GraphicsContext gc;
 
     Player player;
+    Boss boss;
     List<Shot> shots;
     List<Universe> univ;
     List<Bomb> Bombs;
@@ -107,6 +110,7 @@ public class SpaceDriver {
         univ = new ArrayList<>();
         shots = new ArrayList<>();
         Bombs = new ArrayList<>();
+        boss = new Boss(600, 100, PLAYER_SIZE, new Image("SasukeSprite.png"));
         PLAYER_IMG = new Image(chosenCharacter.getBaseImage());
         player = new Player(0, HEIGHT / 2, PLAYER_SIZE, PLAYER_IMG);
         addBombs();
@@ -146,61 +150,135 @@ public class SpaceDriver {
         player.draw();
         player.posY = (int) mouseX;
 
-        Bombs.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
-            if(player.colide(e) && !player.exploding) {
-                player.explode();
-            }
-        });
+        if (currentLevel == MapStages.LEVEL_THREE) {
+            Random rand = new Random();
+            boss.draw();
+            boss.posY = boss.posY + rand.nextInt(-40, 40);
+            boss.bossBombs.add(boss.bossShot());
 
-        for (int i = shots.size() - 1; i >=0 ; i--) {
-            Shot shot = shots.get(i);
-            if(shot.posY < 0 || shot.toRemove)  {
-                shots.remove(i);
-                continue;
-            }
-            shot.update();
-            shot.draw();
-            for (Bomb bomb : Bombs) {
-                if(shot.collide(bomb) && !bomb.exploding) {
-                    score++;
-                    bomb.explode();
+            boss.bossBombs.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
+                if (player.colide(e) && !player.exploding) {
+                    player.explode();
+                }
+            });
+
+            for (int i = shots.size() - 1; i >= 0; i--) {
+                Shot shot = shots.get(i);
+                if (shot.posY < 0 || shot.toRemove) {
+                    shots.remove(i);
+                    continue;
+                }
+                shot.update();
+                shot.draw();
+                for (Bomb bomb : Bombs) {
+                    if (shot.collide(bomb)) {
+                        bomb.explode();
+                        shot.toRemove = true;
+                    }
+                }
+
+                if (shot.collide(boss)) {
+                    boss.bossHP -= 1;
                     shot.toRemove = true;
                 }
             }
-        }
 
-        for (int i = Bombs.size() - 1; i >= 0; i--){
-            if(Bombs.get(i).destroyed)  {
-                Bombs.set(i, newBomb());
+            if (boss.bossHP == 0) {
+                System.out.println("Dead!!!1");
+            }
+        } else {
+            Bombs.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
+                if (player.colide(e) && !player.exploding) {
+                    player.explode();
+                }
+            });
+
+            for (int i = shots.size() - 1; i >= 0; i--) {
+                Shot shot = shots.get(i);
+                if (shot.posY < 0 || shot.toRemove) {
+                    shots.remove(i);
+                    continue;
+                }
+                shot.update();
+                shot.draw();
+                for (Bomb bomb : Bombs) {
+                    if (shot.collide(bomb) && !bomb.exploding) {
+                        score++;
+                        bomb.explode();
+                        shot.toRemove = true;
+                    }
+                }
+            }
+
+            for (int i = Bombs.size() - 1; i >= 0; i--) {
+                if (Bombs.get(i).destroyed) {
+                    Bombs.set(i, newBomb());
+                }
+            }
+
+            gameOver = player.destroyed;
+            if (RAND.nextInt(10) > 2) {
+                univ.add(new Universe());
+            }
+            for (int i = 0; i < univ.size(); i++) {
+                if (univ.get(i).posY > HEIGHT)
+                    univ.remove(i);
+            }
+
+            if (score >= currentLevel.getNumberOfEnemies()) {
+                gc.clearRect(0, 0, WIDTH, HEIGHT);
+                gc.setFill(Color.WHITE);
+                gc.fillRect(0, 0, WIDTH, HEIGHT);
+
+                switch (currentLevel) {
+                    case LEVEL_ONE:
+                        currentLevel = MapStages.LEVEL_TWO;
+                        break;
+                    case LEVEL_TWO:
+                        currentLevel = MapStages.LEVEL_THREE;
+                        break;
+                }
+                gameTimeline.stop();
+
+                SceneController.getInstance().showDialogue(currentLevel);
+                SceneController.getInstance().loadGameBg(currentLevel);
+                startNewStage();
             }
         }
+    }
 
-        gameOver = player.destroyed;
-        if(RAND.nextInt(10) > 2) {
-            univ.add(new Universe());
-        }
-        for (int i = 0; i < univ.size(); i++) {
-            if(univ.get(i).posY > HEIGHT)
-                univ.remove(i);
-        }
+    public class Boss extends Player {
+        int posX;
+        int posY;
+        int bossHP = 5;
+        ArrayList<BossShots> bossBombs = new ArrayList<>();
 
-        if (score >= currentLevel.getNumberOfEnemies()) {
-            gc.clearRect(0, 0, WIDTH, HEIGHT);
-            gc.setFill(Color.WHITE);
-            gc.fillRect(0, 0, WIDTH, HEIGHT);
-
-            switch (currentLevel) {
-                case LEVEL_ONE:
-                    currentLevel = MapStages.LEVEL_TWO;
-                    break;
-                case LEVEL_TWO:
-                    currentLevel = MapStages.LEVEL_THREE;
-                    break;
+        Image bossAttack = new Image("Fireball.png");
+        class BossShots extends Bomb {
+            int SPEED = (score/5) + 2;
+            public BossShots(int posX, int posY, int size, Image image) {
+                super(posX, posY, size, image);
             }
-            gameTimeline.stop();
-            SceneController.getInstance().showDialogue(currentLevel);
-            SceneController.getInstance().loadGameBg(currentLevel);
-            startNewStage();
+            @Override
+            public void update() {
+                super.update();
+                if(!exploding && !destroyed) posX -= SPEED;
+                if(posX > WIDTH) destroyed = true;
+            }
+        }
+        public Boss(int posX, int posY, int size, Image image) {
+            super(posX, posY, size, image);
+            this.posX = posX;
+            this.posY = posY;
+        }
+
+        @Override
+        public void draw() {
+            gc.drawImage(new Image("SasukeSprite.png"), posX, posY, PLAYER_SIZE, PLAYER_SIZE);
+        }
+
+        public BossShots bossShot() {
+            return new BossShots(posX - 5, posY, 10, bossAttack);
         }
     }
 
@@ -249,14 +327,13 @@ public class SpaceDriver {
 
                 PLAYER_IMG = EXPLOSION_IMG;
             }));
-
             dieAnimation.play();
         }
     }
     //computer player
     public class Bomb extends Player {
 
-        int SPEED = (score/5)+2;
+        int SPEED = (score/5) + 2;
 
         public Bomb(int posX, int posY, int size, Image image) {
             super(posX, posY, size, image);
@@ -283,7 +360,7 @@ public class SpaceDriver {
         }
 
         public void update() {
-            posX+=speed;
+            posX += speed;
         }
 
         public void draw() {
@@ -296,15 +373,12 @@ public class SpaceDriver {
                 gc.drawImage(new Image(chosenCharacter.getCharacterAbility()), posX , posY);
             }
         }
-
         public boolean collide (Player Rocket) {
             int distance = distance(this.posX + size / 2, this.posY + size / 2,
                     Rocket.posX + Rocket.size / 2, Rocket.posY + Rocket.size / 2);
             return distance  < Rocket.size / 2 + size / 2;
         }
-
     }
-
     //environment
     public class Universe {
         int posX, posY;

@@ -25,4 +25,5 @@ public interface EnumInterface {
      */
     public String getCharacterAbility();
     public String getDeadImage();
+    public String getDialogueImage();
 }
