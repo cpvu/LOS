@@ -16,5 +16,6 @@ public class MainMenuController {
     }
 
     public void quitGame(ActionEvent event) {
+            System.exit(0);
     }
 }
