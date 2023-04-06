@@ -20,7 +20,7 @@ public class SceneController {
     private final Stage currentStage;
     private final Scene mainMenu;
     private final Scene characterSelection;
-    private Scene gameStage;
+    public Scene gameStage;
 
     private Scene dialogueScene;
     private Scene victoryScene;
@@ -112,8 +112,11 @@ public class SceneController {
    private String generateDialogue() {
         if (SpaceDriver.chosenCharacter == PlayerClass.NARUTO) {
             return "Dattebayo! That was tough, I need to find Sasuke!";
+        } else if
+        (SpaceDriver.currentLevel == MapStages.LEVEL_THREE) {
+            return "So you are Pain.. you are JavaFx";
         }
-        return "That was nothing.";
+        return "Javafx is easy.";
     }
 
     public void showDialogue(MapStages currentLevel) throws IOException {
