@@ -20,10 +20,11 @@ public class SceneController {
     private final Stage currentStage;
     private final Scene mainMenu;
     private final Scene characterSelection;
-    public Scene gameStage;
+    private Scene gameStage;
 
-    public Scene dialogueScene;
-    public static PlayerClass chosenCharacter;
+    private Scene dialogueScene;
+    private Scene victoryScene;
+    private static PlayerClass chosenCharacter;
     private SceneController() throws IOException {
         currentStage = new Stage();
         currentStage.setTitle("Legend of Shinobi");
@@ -59,7 +60,7 @@ public class SceneController {
                 imageString = "bgLevelTwo.png";
                 break;
             case "LEVEL_THREE":
-                imageString = "bgLevelTwo.png";
+                imageString = "bgLevelThree.png";
                 break;
             default:
                 throw new RuntimeException("No background image found");
@@ -93,7 +94,7 @@ public class SceneController {
         Scene gameScene = new Scene(fxmlLoader.load());
 
         AnchorPane sceneBackground = (AnchorPane) gameScene.lookup("#background");
-        createBackground(sceneBackground, "game");
+        createBackground(sceneBackground, String.valueOf(SpaceDriver.currentLevel));
 
         this.gameStage = gameScene;
     }
@@ -122,6 +123,21 @@ public class SceneController {
         Label text = (Label) gameStage.getRoot().lookup("#level");
         text.setText(String.valueOf(SpaceDriver.currentLevel.getLevelName()));
 
+        currentStage.setScene(dialogueScene);
+        currentStage.show();
+    }
+
+    public void createVictory() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(SpaceDriver.Player.class.getResource("victory.fxml"));
+        Scene victoryScene = new Scene(fxmlLoader.load());
+    }
+
+    public void showVictory() throws IOException {
+        Text dialogueText = (Text) dialogueScene.getRoot().lookup("#textDialogue");
+        dialogueText.setText(generateDialogue());
+
+        Label text = (Label) gameStage.getRoot().lookup("#level");
+        text.setText(String.valueOf(SpaceDriver.currentLevel.getLevelName()));
 
         currentStage.setScene(dialogueScene);
         currentStage.show();
@@ -145,5 +161,9 @@ public class SceneController {
     public void showGameStage() {
         currentStage.setScene(gameStage);
         currentStage.show();
+    }
+
+    public Scene getGameStage() {
+        return this.gameStage;
     }
 }
