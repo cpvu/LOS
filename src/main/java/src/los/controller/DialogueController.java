@@ -5,15 +5,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-import src.los.common.MapStages;
-import src.los.common.PlayerClass;
 import src.los.game.SpaceDriver;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class DialogueController extends SceneController implements Initializable  {
+public class DialogueController implements Initializable  {
     @FXML
     public ImageView charPortrait;
     @FXML

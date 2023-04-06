@@ -62,10 +62,8 @@ public class SpaceDriver {
 
     private double mouseX;
     private int score;
-
     @FXML
     Label scoreLabel;
-
     /**
      * Creates a new Canvas object with a specified width and height,
      * sets the GraphicsContext2D object to the canvas object, creates a Timeline object with an indefinite cycle count,
@@ -119,7 +117,7 @@ public class SpaceDriver {
         univ = new ArrayList<>();
         shots = new ArrayList<>();
         Bombs = new ArrayList<>();
-        boss = new Boss(600, HEIGHT / 2, PLAYER_SIZE, new Image("Boss.png"));
+        boss = new Boss(600, HEIGHT / 2, PLAYER_SIZE + 20, new Image("Boss.png"));
         PLAYER_IMG = new Image(chosenCharacter.getBaseImage());
         player = new Player(0, HEIGHT / 2, PLAYER_SIZE, PLAYER_IMG);
         addBombs();
@@ -134,6 +132,103 @@ public class SpaceDriver {
         Scene gameStage = SceneController.getInstance().gameStage;
         scoreLabel = (Label) gameStage.lookup("#scoreLabel");
         scoreLabel.setText("" + score);
+    }
+
+    private void bossFight() {
+        Random rand = new Random();
+        boss.draw();
+        if (boss.posY < 60) {
+            boss.posY = boss.posY + 40;
+        } else if (boss.posY > HEIGHT - 60) {
+            boss.posY = boss.posY - 40;
+        }
+        boss.posY = boss.posY + rand.nextInt(0,80) - 40;
+
+        if (rand.nextInt(15) < 2 ) {
+            boss.bossBombs.add(boss.bossShot());
+        }
+
+        for (int i = boss.bossBombs.size() - 1; i >= 0; i--) {
+            if (boss.bossBombs.get(i).destroyed) {
+                boss.bossBombs.remove(i);
+            }
+        }
+
+        boss.bossBombs.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
+            if (player.colide(e) && !player.exploding) {
+                player.explode();
+            }
+        });
+
+        for (int i = shots.size() - 1; i >= 0; i--) {
+            Shot shot = shots.get(i);
+            if (shot.posY < 0 || shot.toRemove) {
+                shots.remove(i);
+                continue;
+            }
+            shot.update();
+            shot.draw();
+
+            for (Boss.BossShots bomb : boss.bossBombs) {
+                if (shot.collide(bomb)) {
+                    bomb.explode();
+                    shot.toRemove = true;
+                }
+            }
+            if (shot.collide(boss)) {
+                boss.bossHP -= 1;
+                shot.toRemove = true;
+            }
+        }
+        for (int i = boss.bossBombs.size() - 1; i >= 0; i--) {
+            if (boss.bossBombs.get(i).destroyed) {
+                boss.bossBombs.remove(i);
+            }
+        }
+        if (boss.bossHP == 0) {
+            boss.explode();
+        }
+        gameOver = player.destroyed;
+    }
+
+    private void regularFight() {
+        Bombs.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
+            if (player.colide(e) && !player.exploding) {
+                player.explode();
+            }
+        });
+
+        for (int i = shots.size() - 1; i >= 0; i--) {
+            Shot shot = shots.get(i);
+            if (shot.posY < 0 || shot.toRemove) {
+                shots.remove(i);
+                continue;
+            }
+            shot.update();
+            shot.draw();
+            for (Bomb bomb : Bombs) {
+                if (shot.collide(bomb) && !bomb.exploding) {
+                    score++;
+                    bomb.explode();
+                    shot.toRemove = true;
+                }
+            }
+        }
+
+        for (int i = Bombs.size() - 1; i >= 0; i--) {
+            if (Bombs.get(i).destroyed) {
+                Bombs.set(i, newBomb());
+            }
+        }
+
+        gameOver = player.destroyed;
+        if (RAND.nextInt(10) > 2) {
+            univ.add(new Universe());
+        }
+        for (int i = 0; i < univ.size(); i++) {
+            if (univ.get(i).posY > HEIGHT)
+                univ.remove(i);
+        }
     }
 
     //run Graphics
@@ -162,95 +257,9 @@ public class SpaceDriver {
         player.posY = (int) mouseX;
 
         if (currentLevel == MapStages.LEVEL_THREE) {
-            Random rand = new Random();
-            boss.draw();
-            if (boss.posY < 60) {
-                boss.posY = boss.posY + 40;
-            } else if (boss.posY > HEIGHT - 60) {
-                boss.posY = boss.posY - 40;
-            }
-            boss.posY = boss.posY + rand.nextInt(0,80) - 40;
-
-            if (rand.nextInt(10) < 2 ) {
-                boss.bossBombs.add(boss.bossShot());
-            }
-
-            boss.bossBombs.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
-                if (player.colide(e) && !player.exploding) {
-                    player.explode();
-                }
-            });
-
-            for (int i = shots.size() - 1; i >= 0; i--) {
-                Shot shot = shots.get(i);
-                if (shot.posY < 0 || shot.toRemove) {
-                    shots.remove(i);
-                    continue;
-                }
-                shot.update();
-                shot.draw();
-
-                for (Boss.BossShots bomb : boss.bossBombs) {
-                    if (shot.collide(bomb)) {
-                        bomb.explode();
-                        shot.toRemove = true;
-                    }
-                }
-
-                if (shot.collide(boss)) {
-                    boss.bossHP -= 1;
-                    shot.toRemove = true;
-                }
-            }
-
-            for (int i = boss.bossBombs.size() - 1; i >= 0; i--) {
-                if (boss.bossBombs.get(i).destroyed) {
-                    boss.bossBombs.remove(i);
-                }
-            }
-
-            if (boss.bossHP == 0) {
-                System.out.println("Dead!!!1");
-            }
-            gameOver = player.destroyed;
+            bossFight();
         } else {
-            Bombs.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
-                if (player.colide(e) && !player.exploding) {
-                    player.explode();
-                }
-            });
-
-            for (int i = shots.size() - 1; i >= 0; i--) {
-                Shot shot = shots.get(i);
-                if (shot.posY < 0 || shot.toRemove) {
-                    shots.remove(i);
-                    continue;
-                }
-                shot.update();
-                shot.draw();
-                for (Bomb bomb : Bombs) {
-                    if (shot.collide(bomb) && !bomb.exploding) {
-                        score++;
-                        bomb.explode();
-                        shot.toRemove = true;
-                    }
-                }
-            }
-
-            for (int i = Bombs.size() - 1; i >= 0; i--) {
-                if (Bombs.get(i).destroyed) {
-                    Bombs.set(i, newBomb());
-                }
-            }
-
-            gameOver = player.destroyed;
-            if (RAND.nextInt(10) > 2) {
-                univ.add(new Universe());
-            }
-            for (int i = 0; i < univ.size(); i++) {
-                if (univ.get(i).posY > HEIGHT)
-                    univ.remove(i);
-            }
+            regularFight();
 
             if (score >= currentLevel.getNumberOfEnemies()) {
                 gc.clearRect(0, 0, WIDTH, HEIGHT);
@@ -291,7 +300,7 @@ public class SpaceDriver {
          * overrides its update() method.
          */
         class BossShots extends Bomb {
-            int SPEED = (score/5) + 2;
+            int SPEED = (score / 8) + 1;
             public BossShots(int posX, int posY, int size, Image image) {
                 super(posX, posY, size, image);
             }
@@ -448,7 +457,6 @@ public class SpaceDriver {
                 gc.drawImage(img, posX, posY, size, size);
             }
         }
-
         @Override
         public void explode() {
             exploding = true;

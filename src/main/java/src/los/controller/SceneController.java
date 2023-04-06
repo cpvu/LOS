@@ -24,7 +24,7 @@ public class SceneController {
 
     public Scene dialogueScene;
     public static PlayerClass chosenCharacter;
-    public SceneController() throws IOException {
+    private SceneController() throws IOException {
         currentStage = new Stage();
         currentStage.setTitle("Legend of Shinobi");
         currentStage.setResizable(false);
