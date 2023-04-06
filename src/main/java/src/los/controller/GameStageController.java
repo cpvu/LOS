@@ -30,6 +30,9 @@ public class GameStageController implements Initializable {
     @FXML
     public Label scoreLabel;
 
+    @FXML
+    public Label level;
+
     private void setGamePane (Canvas gamePane) {
         this.gamePane.getChildren().add(gamePane);
     }

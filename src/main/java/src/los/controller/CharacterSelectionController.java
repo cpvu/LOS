@@ -16,9 +16,6 @@ import java.io.IOException;
  * @version 1.0
  */
 public class CharacterSelectionController {
-
-    public PlayerClass chosenCharacter;
-
     /**
      * Sets the chosen character to Naruto.
      */

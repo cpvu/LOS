@@ -33,15 +33,6 @@ public enum PlayerClass implements EnumInterface{
     }
 
     /**
-     * Returns the character's name.
-     * @return the character's name.
-     */
-    @Override
-    public String getCharacterName() {
-        return this.characterName;
-    }
-
-    /**
      * Returns the character's image.
      * @return the character's image.
      */
