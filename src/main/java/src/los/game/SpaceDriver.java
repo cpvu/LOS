@@ -22,6 +22,7 @@ import javafx.util.Duration;
 import src.los.common.MapStages;
 import src.los.common.PlayerClass;
 import src.los.controller.DialogueController;
+import src.los.controller.GameStageController;
 import src.los.controller.SceneController;
 import javafx.scene.Scene;
 
@@ -29,7 +30,7 @@ public class SpaceDriver {
     //variables
     private static final Random RAND = new Random();
     public static PlayerClass chosenCharacter;
-    public static MapStages currentLevel = MapStages.LEVEL_THREE;
+    public static MapStages currentLevel = MapStages.LEVEL_ONE;
     private static final int WIDTH = 700;
     private static final int HEIGHT = 370;
     private static final int PLAYER_SIZE = 60;
@@ -125,7 +126,9 @@ public class SpaceDriver {
         scoreLabel = (Label) gameStage.lookup("#scoreLabel");
         scoreLabel.setText("" + score);
     }
+    private void bossFight() {
 
+    }
     //run Graphics
     private void run(GraphicsContext gc) throws IOException {
         gc.clearRect(0, 0, WIDTH, HEIGHT);
@@ -138,9 +141,10 @@ public class SpaceDriver {
         updateScore(score);
 
         if(gameOver) {
-            gc.setFont(Font.font(35));
-            gc.setFill(Color.YELLOW);
-            gc.fillText("Game Over \n Your Score is: " + score + " \n Click to play again", WIDTH / 2, HEIGHT /2.5);
+            gc.setFont(Font.font(28));
+            gc.setFill(Color.BLACK);
+            gc.drawImage(new Image(chosenCharacter.getDialogueImage()), 100, 100);
+            gc.fillText("You've died.. \n Your Score is: " + score + " \n Click to play again", WIDTH / 2, HEIGHT / 2.5);
             //	return;
         }
 
@@ -153,8 +157,12 @@ public class SpaceDriver {
         if (currentLevel == MapStages.LEVEL_THREE) {
             Random rand = new Random();
             boss.draw();
-            boss.posY = boss.posY + rand.nextInt(-40, 40);
-            boss.bossBombs.add(boss.bossShot());
+            boss.posY = boss.posY + rand.nextInt(-20, 20);
+            boss.bossAttackCounter += 1;
+
+            if (rand.nextInt(10) < 2) {
+                boss.bossBombs.add(boss.bossShot());
+            }
 
             boss.bossBombs.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
                 if (player.colide(e) && !player.exploding) {
@@ -170,13 +178,13 @@ public class SpaceDriver {
                 }
                 shot.update();
                 shot.draw();
-                for (Bomb bomb : Bombs) {
+
+                for (Boss.BossShots bomb : boss.bossBombs) {
                     if (shot.collide(bomb)) {
                         bomb.explode();
                         shot.toRemove = true;
                     }
                 }
-
                 if (shot.collide(boss)) {
                     boss.bossHP -= 1;
                     shot.toRemove = true;
@@ -184,8 +192,10 @@ public class SpaceDriver {
             }
 
             if (boss.bossHP == 0) {
-                System.out.println("Dead!!!1");
+                //SceneController.getInstance()
+                //Show Victory Scene.
             }
+            gameOver = player.destroyed;
         } else {
             Bombs.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
                 if (player.colide(e) && !player.exploding) {
@@ -251,6 +261,7 @@ public class SpaceDriver {
         int posX;
         int posY;
         int bossHP = 5;
+        int bossAttackCounter = 0;
         ArrayList<BossShots> bossBombs = new ArrayList<>();
 
         Image bossAttack = new Image("Fireball.png");
@@ -278,7 +289,7 @@ public class SpaceDriver {
         }
 
         public BossShots bossShot() {
-            return new BossShots(posX - 5, posY, 10, bossAttack);
+            return new BossShots(posX - 10, posY, 30 , bossAttack);
         }
     }
 
@@ -338,7 +349,6 @@ public class SpaceDriver {
         public Bomb(int posX, int posY, int size, Image image) {
             super(posX, posY, size, image);
         }
-
         public void update() {
             super.update();
             if(!exploding && !destroyed) posX -= SPEED;
