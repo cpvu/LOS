@@ -4,17 +4,27 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
 <AnchorPane prefHeight="500.0" prefWidth="700.0" stylesheets="@../../../styles/dialogue.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.los.controller.DialogueController">
    <children>
-      <TextFlow layoutX="198.0" layoutY="281.0" prefHeight="59.0" prefWidth="302.0" textAlignment="CENTER">
-         <children>
-            <Text fx:id="textDialogue" strokeType="OUTSIDE" strokeWidth="2.0" text="Dattebayo... off to the next village" wrappingWidth="175.17782592773438" />
-         </children>
-      </TextFlow>
-      <Button layoutX="291.0" layoutY="351.0" mnemonicParsing="false" onAction="#confirmDialogue" styleClass="button" text="Next" />
+      <ImageView fitHeight="639.0" fitWidth="803.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../dialoguebg.png" />
+         </image>
+      </ImageView>
+      <BorderPane layoutX="187.0" layoutY="258.0" prefHeight="100.0" prefWidth="324.0" style="-fx-background-color: #FFFFFF;">
+         <bottom>
+            <TextFlow prefHeight="59.0" prefWidth="302.0" textAlignment="CENTER" BorderPane.alignment="CENTER">
+               <children>
+                  <Text fx:id="textDialogue" strokeType="OUTSIDE" strokeWidth="2.0" text="Dattebayo... off to the next village" wrappingWidth="175.17782592773438" />
+               </children>
+            </TextFlow>
+         </bottom>
+      </BorderPane>
+      <Button layoutX="286.0" layoutY="388.0" mnemonicParsing="false" onAction="#confirmDialogue" styleClass="button" text="Next" />
       <ImageView fx:id="charPortrait" fitHeight="190.0" fitWidth="185.0" layoutX="264.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../narutoPortrait.png" />
