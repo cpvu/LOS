@@ -12,13 +12,13 @@
    <children>
       <TextFlow layoutX="204.0" layoutY="203.0" prefHeight="59.0" prefWidth="302.0" textAlignment="CENTER">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="2.0" text="Dattebayo... off to the next village" wrappingWidth="239.8310546875" />
+            <Text fx:id="textDialogue" strokeType="OUTSIDE" strokeWidth="2.0" text="Dattebayo... off to the next village" wrappingWidth="239.8310546875" />
          </children>
       </TextFlow>
       <Button layoutX="328.0" layoutY="263.0" mnemonicParsing="false" text="Next" onAction="#confirmDialogue"/>
-      <ImageView fitHeight="131.0" fitWidth="142.0" layoutX="292.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="charPortrait" fitHeight="131.0" fitWidth="142.0" layoutX="292.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../NarutoDisplayImage_-_Copy.png" />
+            <Image url="@../../../narutoPortrait.png" />
          </image>
       </ImageView>
    </children>
