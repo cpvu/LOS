@@ -9,6 +9,7 @@ import javafx.scene.layout.StackPane;
 import src.los.common.PlayerClass;
 import src.los.game.SpaceDriver;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -35,6 +36,7 @@ public class GameStageController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         characterName.setText(SpaceDriver.chosenCharacter.toString());
+        level.setText(String.valueOf(SpaceDriver.currentLevel.getLevelName()));
         SpaceDriver gameDriver = new SpaceDriver();
         Canvas gameScene = gameDriver.initializeGameScene();
         setGamePane(gameScene);
