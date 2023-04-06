@@ -12,24 +12,34 @@ public enum PlayerClass implements EnumInterface{
             "NarutoSprite.png",
             "RasenganSprite.png",
             "NarutoDead.png",
-            "narutoPortrait.png"),
+            "narutoPortrait.png",
+            "narutoGameOver.png"),
     SASUKE("Sasuke",
             "SasukeSprite.png",
             "Fireball.png",
             "SasukeDead.png",
-            "sasukePortrait.png");
+            "sasukePortrait.png",
+            "sasukeGameOver.png");
 
     private final String characterName;
     private final String characterBaseImage;
     private final String characterDeadImage;
     private final String characterAbility;
     private final String dialogueImage;
-    PlayerClass(String characterName, String characterImage, String characterAbility, String characterDeadImage, String dialogueImage) {
+    private final String gameOverImage;
+    PlayerClass(String characterName,
+                String characterImage,
+                String characterAbility,
+                String characterDeadImage,
+                String dialogueImage,
+                String gameOverImage) {
+
         this.characterName = characterName;
         this.characterBaseImage = characterImage;
         this.characterAbility = characterAbility;
         this.characterDeadImage = characterDeadImage;
         this.dialogueImage = dialogueImage;
+        this.gameOverImage = gameOverImage;
     }
 
     /**
@@ -53,4 +63,6 @@ public enum PlayerClass implements EnumInterface{
     public String getDeadImage() { return this.characterDeadImage;}
     @Override
     public String getDialogueImage() { return this.dialogueImage; }
+
+    public String getGameOverImage() { return this.gameOverImage; }
 }

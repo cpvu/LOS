@@ -29,7 +29,7 @@ public class SpaceDriver {
     //variables
     private static final Random RAND = new Random();
     public static PlayerClass chosenCharacter;
-    public static MapStages currentLevel = MapStages.LEVEL_THREE;
+    public static MapStages currentLevel = MapStages.LEVEL_ONE;
     private static final int WIDTH = 700;
     private static final int HEIGHT = 370;
     private static final int PLAYER_SIZE = 60;
@@ -106,7 +106,7 @@ public class SpaceDriver {
         univ = new ArrayList<>();
         shots = new ArrayList<>();
         Bombs = new ArrayList<>();
-        boss = new Boss(600, HEIGHT / 2, PLAYER_SIZE, new Image("SasukeSprite.png"));
+        boss = new Boss(600, HEIGHT / 2, PLAYER_SIZE, new Image("Boss.png"));
         PLAYER_IMG = new Image(chosenCharacter.getBaseImage());
         player = new Player(0, HEIGHT / 2, PLAYER_SIZE, PLAYER_IMG);
         addBombs();
@@ -136,7 +136,7 @@ public class SpaceDriver {
         if(gameOver) {
             gc.setFont(Font.font(28));
             gc.setFill(Color.BLACK);
-            gc.drawImage(new Image(chosenCharacter.getDialogueImage()), 100, 100);
+            gc.drawImage(new Image(chosenCharacter.getGameOverImage()), 100, 100);
             gc.fillText("You've died.. \n Your Score is: " + score + " \n Click to play again", WIDTH / 2, HEIGHT / 2.5);
             //	return;
         }
@@ -261,7 +261,7 @@ public class SpaceDriver {
         int bossAttackCounter = 0;
         ArrayList<BossShots> bossBombs = new ArrayList<>();
 
-        Image bossAttack = new Image("Fireball.png");
+        Image bossAttack = new Image("BossAttack.png");
         class BossShots extends Bomb {
             int SPEED = (score/5) + 2;
             public BossShots(int posX, int posY, int size, Image image) {
@@ -282,11 +282,21 @@ public class SpaceDriver {
 
         @Override
         public void draw() {
-            gc.drawImage(new Image("SasukeSprite.png"), posX, posY, PLAYER_SIZE, PLAYER_SIZE);
+            gc.drawImage(new Image("Boss.png"), posX, posY, PLAYER_SIZE, PLAYER_SIZE);
         }
 
         public BossShots bossShot() {
             return new BossShots(posX - 10, posY, 30 , bossAttack);
+        }
+        @Override
+        public void explode() {
+            Timeline dieAnimation = new Timeline(new KeyFrame(Duration.millis(100), e -> {
+                exploding = true;
+                explosionStep = -1;
+
+                gc.drawImage(new Image("PainDead.png"), posX, posY, PLAYER_SIZE, PLAYER_SIZE);
+            }));
+            dieAnimation.play();
         }
     }
 
@@ -328,8 +338,7 @@ public class SpaceDriver {
             return d < other.size / 2 + this.size / 2 ;
         }
         public void explode() {
-
-            Timeline dieAnimation = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
+            Timeline dieAnimation = new Timeline(new KeyFrame(Duration.millis(100), e -> {
                 exploding = true;
                 explosionStep = -1;
 
@@ -351,6 +360,15 @@ public class SpaceDriver {
             super.update();
             if(!exploding && !destroyed) posX -= SPEED;
             if(posX > WIDTH) destroyed = true;
+        }
+        @Override
+        public void draw() {
+            if(exploding) {
+                gc.drawImage(new Image("enemyDead.png"),posX, posY, size, size);
+            }
+            else {
+                gc.drawImage(img, posX, posY, size, size);
+            }
         }
     }
 
