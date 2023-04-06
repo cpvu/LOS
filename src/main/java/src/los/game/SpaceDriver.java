@@ -468,6 +468,7 @@ public class SpaceDriver {
             super.update();
             if(!exploding && !destroyed) posX -= SPEED;
             if(posX > WIDTH) destroyed = true;
+            if(posY > (HEIGHT - 60)) destroyed = true;
         }
 
         /**
