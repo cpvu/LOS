@@ -16,7 +16,9 @@ public enum MapStages {
         add("Enemy6.png");
         add("Enemy7.png");
     }}),
-    LEVEL_THREE(1, "The Final Battle", new ArrayList<>());
+    LEVEL_THREE(1, "The Final Battle", new ArrayList<>() {{
+        add("Boss.png");
+    }});
 
     private final int numberOfEnemies;
     private final String levelName;

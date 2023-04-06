@@ -208,6 +208,9 @@ public class SpaceDriver {
         }
         if (boss.bossHP == 0) {
             boss.explode();
+            System.out.println("Boss defeated");
+            gameTimeline.stop();
+            victory();
         }
         gameOver = player.destroyed;
     }

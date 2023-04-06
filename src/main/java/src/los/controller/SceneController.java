@@ -133,16 +133,19 @@ public class SceneController {
     public void createVictory() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(SpaceDriver.Player.class.getResource("victory.fxml"));
         Scene victoryScene = new Scene(fxmlLoader.load());
+        this.victoryScene = victoryScene;
     }
 
     public void showVictory() throws IOException {
+        createVictory();
         Text dialogueText = (Text) dialogueScene.getRoot().lookup("#textDialogue");
-        dialogueText.setText(generateDialogue());
 
-        Label text = (Label) gameStage.getRoot().lookup("#level");
-        text.setText(String.valueOf(SpaceDriver.currentLevel.getLevelName()));
-
-        currentStage.setScene(dialogueScene);
+        if (SpaceDriver.chosenCharacter == PlayerClass.NARUTO) {
+            dialogueText.setText("Dattebayo! I did it!");
+        } else {
+            dialogueText.setText("My revenge is complete!");
+        }
+        currentStage.setScene(victoryScene);
         currentStage.show();
     }
 
