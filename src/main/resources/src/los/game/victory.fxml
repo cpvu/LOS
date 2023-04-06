@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.los.controller.VictoryController">
+    <children>
+        <TextFlow layoutX="199.0" layoutY="227.0" prefHeight="59.0" prefWidth="302.0" textAlignment="CENTER">
+            <children>
+                <Text fx:id="textDialogue" strokeType="OUTSIDE" strokeWidth="2.0" text="I did it! Believe it!" wrappingWidth="239.8310546875">
+               <font>
+                  <Font name="Ninja Naruto" size="13.0" />
+               </font>
+            </Text>
+            </children>
+        </TextFlow>
+        <ImageView fx:id="charPortrait" fitHeight="131.0" fitWidth="142.0" layoutX="283.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../../narutoPortrait.png" />
+            </image>
+        </ImageView>
+      <Label layoutX="294.0" layoutY="14.0" prefHeight="52.0" prefWidth="251.0" text="VICTORY">
+         <font>
+            <Font name="Ninja Naruto" size="24.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>

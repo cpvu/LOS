@@ -7,16 +7,15 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-
-<AnchorPane prefHeight="300.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.los.controller.DialogueController">
+<AnchorPane prefHeight="500.0" prefWidth="700.0" stylesheets="@../../../styles/dialogue.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.los.controller.DialogueController">
    <children>
-      <TextFlow layoutX="204.0" layoutY="203.0" prefHeight="59.0" prefWidth="302.0" textAlignment="CENTER">
+      <TextFlow layoutX="198.0" layoutY="281.0" prefHeight="59.0" prefWidth="302.0" textAlignment="CENTER">
          <children>
-            <Text fx:id="textDialogue" strokeType="OUTSIDE" strokeWidth="2.0" text="Dattebayo... off to the next village" wrappingWidth="239.8310546875" />
+            <Text fx:id="textDialogue" strokeType="OUTSIDE" strokeWidth="2.0" text="Dattebayo... off to the next village" wrappingWidth="175.17782592773438" />
          </children>
       </TextFlow>
-      <Button layoutX="328.0" layoutY="263.0" mnemonicParsing="false" text="Next" onAction="#confirmDialogue"/>
-      <ImageView fx:id="charPortrait" fitHeight="131.0" fitWidth="142.0" layoutX="292.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
+      <Button layoutX="291.0" layoutY="351.0" mnemonicParsing="false" onAction="#confirmDialogue" styleClass="button" text="Next" />
+      <ImageView fx:id="charPortrait" fitHeight="190.0" fitWidth="185.0" layoutX="264.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../narutoPortrait.png" />
          </image>
