@@ -35,10 +35,6 @@ public class SpaceDriver {
     private static final int PLAYER_SIZE = 60;
     public Image PLAYER_IMG = new Image(chosenCharacter.getBaseImage());
     public final Image EXPLOSION_IMG = new Image(chosenCharacter.getDeadImage());
-    static final int EXPLOSION_W = 128;
-    static final int EXPLOSION_ROWS = 4;
-    static final int EXPLOSION_COL = 4;
-    static final int EXPLOSION_H = 128;
     static final int EXPLOSION_STEPS = 15;
     public static Timeline gameTimeline;
 
