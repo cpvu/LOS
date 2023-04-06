@@ -25,6 +25,11 @@ import src.los.controller.DialogueController;
 import src.los.controller.SceneController;
 import javafx.scene.Scene;
 
+/**
+ * The game driver class that has all the necessary inner class.
+ * @author Calvin Vu & Hanxiao Mao
+ * @version 1.0
+ */
 public class SpaceDriver {
     //variables
     private static final Random RAND = new Random();
@@ -61,7 +66,12 @@ public class SpaceDriver {
     @FXML
     Label scoreLabel;
 
-    //start
+    /**
+     * Creates a new Canvas object with a specified width and height,
+     * sets the GraphicsContext2D object to the canvas object, creates a Timeline object with an indefinite cycle count,
+     * and sets the cursor to move and the mouse listener to register the mouse movement and mouse click events.
+     * @return Returns a Canvas object that represents the game scene.
+     */
     public Canvas initializeGameScene() {
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -94,6 +104,9 @@ public class SpaceDriver {
         return canvas;
     }
 
+    /**
+     * Starts a new game stage.
+     */
     public void startNewStage() {
         Bombs.clear();
         shots.clear();
@@ -101,7 +114,7 @@ public class SpaceDriver {
         addBombs();
     }
 
-    //setup the game
+    // set up the necessary data structure to hold the objects.
     private void setup() {
         univ = new ArrayList<>();
         shots = new ArrayList<>();
@@ -112,10 +125,11 @@ public class SpaceDriver {
         addBombs();
     }
 
+    //add enemy.
     private void addBombs() {
         IntStream.range(0, MAX_BOMBS).mapToObj(i -> this.newBomb()).forEach(Bombs::add);
     }
-
+    //Update the score.
     private void updateScore(int score) throws IOException {
         Scene gameStage = SceneController.getInstance().gameStage;
         scoreLabel = (Label) gameStage.lookup("#scoreLabel");
@@ -150,14 +164,14 @@ public class SpaceDriver {
         if (currentLevel == MapStages.LEVEL_THREE) {
             Random rand = new Random();
             boss.draw();
-            if (boss.posY < 50) {
-                boss.posY = boss.posY + 10;
-            } else if (boss.posY > HEIGHT - 50) {
-                boss.posY = boss.posY - 10;
+            if (boss.posY < 60) {
+                boss.posY = boss.posY + 40;
+            } else if (boss.posY > HEIGHT - 60) {
+                boss.posY = boss.posY - 40;
             }
-            boss.posY = boss.posY + rand.nextInt(0,100) - 50;
+            boss.posY = boss.posY + rand.nextInt(0,80) - 40;
 
-            if (rand.nextInt(12) < 2 ) {
+            if (rand.nextInt(10) < 2 ) {
                 boss.bossBombs.add(boss.bossShot());
             }
 
@@ -259,19 +273,32 @@ public class SpaceDriver {
             }
         }
     }
+
+    /**
+     * The Boss class represents the enemy boss object in a game. It extends the Player class and
+     * includes additional attributes such as position, hit points, attack counter, and a collection
+     * of BossShots objects.
+     */
     public class Boss extends Player {
         int posX;
         int posY;
         int bossHP = 5;
         int bossAttackCounter = 0;
         ArrayList<BossShots> bossBombs = new ArrayList<>();
-
         Image bossAttack = new Image("BossAttack.png");
+        /**
+         * The BossShots class represents the shots fired by the boss. It extends the Bomb class and
+         * overrides its update() method.
+         */
         class BossShots extends Bomb {
-            int SPEED = (score / 7) + 2;
+            int SPEED = (score/5) + 2;
             public BossShots(int posX, int posY, int size, Image image) {
                 super(posX, posY, size, image);
             }
+
+            /**
+             * Update the boss shots status.
+             */
             @Override
             public void update() {
                 super.update();
@@ -285,14 +312,25 @@ public class SpaceDriver {
             this.posY = posY;
         }
 
+        /**
+         * Draws the boss on the game canvas.
+         */
         @Override
         public void draw() {
             gc.drawImage(new Image("Boss.png"), posX, posY, PLAYER_SIZE, PLAYER_SIZE);
         }
 
+        /**
+         * Creates and returns a new BossShots object at the appropriate position.
+         * @return a new BossShots object
+         */
         public BossShots bossShot() {
             return new BossShots(posX - 10, posY, 30 , bossAttack);
         }
+
+        /**
+         * Change the image if enemy dead, and set the explode status to true.
+         */
         @Override
         public void explode() {
             Timeline dieAnimation = new Timeline(new KeyFrame(Duration.millis(100), e -> {
@@ -305,7 +343,10 @@ public class SpaceDriver {
         }
     }
 
-    //player
+    /**
+     * The Player class represents a player object in a game. It contains information about the player's position, size,
+     * image, and whether the player is exploding or destroyed.
+     */
     public class Player {
 
         int posX, posY, size;
@@ -320,15 +361,25 @@ public class SpaceDriver {
             img = image;
         }
 
+        /**
+         * Creates a new shot object.
+         * @return A new shot object.
+         */
         public Shot shoot() {
             return new Shot(posX + size / 2 - Shot.size / 2, posY - Shot.size);
         }
 
+        /**
+         * Updates the state of the player.
+         */
         public void update() {
             if(exploding) explosionStep++;
             destroyed = explosionStep > EXPLOSION_STEPS;
         }
 
+        /**
+         * Draws the player.
+         */
         public void draw() {
             if(exploding) {
                 gc.drawImage(EXPLOSION_IMG,posX, posY, size, size);
@@ -337,13 +388,24 @@ public class SpaceDriver {
                 gc.drawImage(img, posX, posY, size, size);
             }
         }
+
+        /**
+         * Checks if the player collides with another player.
+         * @param other The other player to check for collision.
+         * @return True if the players collide, false otherwise.
+         */
         public boolean colide(Player other) {
             int d = distance(this.posX + size / 2, this.posY + size /2,
                     other.posX + other.size / 2, other.posY + other.size / 2);
             return d < other.size / 2 + this.size / 2 ;
         }
+
+        /**
+         * Starts the explosion animation.
+         */
         public void explode() {
-            Timeline dieAnimation = new Timeline(new KeyFrame(Duration.millis(100), e -> {
+
+            Timeline dieAnimation = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
                 exploding = true;
                 explosionStep = -1;
 
@@ -352,7 +414,11 @@ public class SpaceDriver {
             dieAnimation.play();
         }
     }
-    //computer player
+
+    /**
+     * The Bomb class is a subclass of the Player class and represents a bomb that is dropped by the player in a game.
+     * It moves across the screen from right to left until it reaches the left edge of the screen or explodes upon impact with an enemy.
+     */
     public class Bomb extends Player {
 
         int SPEED = (score/5) + 2;
@@ -361,11 +427,18 @@ public class SpaceDriver {
             super(posX, posY, size, image);
         }
 
+        /**
+         * Updates the bomb's position on the screen.
+         */
         public void update() {
             super.update();
             if(!exploding && !destroyed) posX -= SPEED;
             if(posX > WIDTH) destroyed = true;
         }
+
+        /**
+         * Draws the bomb on the screen.
+         */
         @Override
         public void draw() {
             if(exploding) {
@@ -382,7 +455,10 @@ public class SpaceDriver {
         }
     }
 
-    //bullets
+    /**
+     * The Shot class represents a shot that can be fired by a character in a game.
+     * It has a position on the game screen, a speed, and a size.
+     */
     public class Shot {
 
         public boolean toRemove;
@@ -395,10 +471,16 @@ public class SpaceDriver {
             this.posY = posY;
         }
 
+        /**
+         * Update the bullet.
+         */
         public void update() {
             posX += speed;
         }
 
+        /**
+         * Draw the bullet in the canvas.
+         */
         public void draw() {
             gc.drawImage(new Image(chosenCharacter.getCharacterAbility()), posX , posY);
             if (score >=50 && score<=70 || score>=120) {
@@ -409,6 +491,12 @@ public class SpaceDriver {
                 gc.drawImage(new Image(chosenCharacter.getCharacterAbility()), posX , posY);
             }
         }
+
+        /**
+         * Determines whether the shot has collided with the player's rocket.
+         * @param Rocket the player's rocket
+         * @return true if the shot has collided with the player's rocket, false otherwise
+         */
         public boolean collide (Player Rocket) {
             int distance = distance(this.posX + size / 2, this.posY + size / 2,
                     Rocket.posX + Rocket.size / 2, Rocket.posY + Rocket.size / 2);
@@ -418,6 +506,7 @@ public class SpaceDriver {
     //environment
     public class Universe {
         int posX, posY;
+        private int h, w, r, g, b;
         private double opacity;
 
         public Universe() {
@@ -442,11 +531,22 @@ public class SpaceDriver {
         }
     }
 
-
+    /**
+     * Create enemy object.
+     * @return enemy object
+     */
     Bomb newBomb() {
         return new Bomb(600 + RAND.nextInt(WIDTH - 200), 20 + RAND.nextInt(HEIGHT - 30), PLAYER_SIZE, BOMBS_IMG[RAND.nextInt(BOMBS_IMG.length)]);
     }
 
+    /**
+     *Calculates the Euclidean distance between two points in 2D space.
+     * @param x1 The x-coordinate of the first point.
+     * @param y1 The y-coordinate of the first point.
+     * @param x2 The x-coordinate of the second point.
+     * @param y2 The y-coordinate of the second point.
+     * @return The distance between the two points.
+     */
     int distance(int x1, int y1, int x2, int y2) {
         return (int) Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
     }
