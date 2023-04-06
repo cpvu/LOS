@@ -156,7 +156,10 @@ public class SpaceDriver {
                 boss.posY = boss.posY - 10;
             }
             boss.posY = boss.posY + rand.nextInt(0,100) - 50;
-            boss.bossBombs.add(boss.bossShot());
+
+            if (rand.nextInt(10) < 2 ) {
+                boss.bossBombs.add(boss.bossShot());
+            }
 
             boss.bossBombs.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
                 if (player.colide(e) && !player.exploding) {
