@@ -3,7 +3,6 @@ package src.los.game;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -21,7 +20,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import src.los.common.MapStages;
 import src.los.common.PlayerClass;
-import src.los.controller.DialogueController;
 import src.los.controller.SceneController;
 import javafx.scene.Scene;
 
@@ -38,19 +36,19 @@ public class SpaceDriver {
     private static final int WIDTH = 700;
     private static final int HEIGHT = 370;
     private static final int PLAYER_SIZE = 60;
-    public Image PLAYER_IMG = new Image(chosenCharacter.getBaseImage());
-    public final Image EXPLOSION_IMG = new Image(chosenCharacter.getDeadImage());
+    public Image PLAYER_ALIVE = new Image(chosenCharacter.getBaseImage());
+    public final Image PLAYER_DEAD = new Image(chosenCharacter.getDeadImage());
     static final int EXPLOSION_STEPS = 15;
     public static Timeline gameTimeline;
 
-    static final Image BOMBS_IMG[] = {
+    static final Image ENEMIES_IMG[] = {
             new Image("Enemy2.png"),
             new Image("Enemy1.png"),
             new Image("Enemy3.png"),
-            new Image("file:./images/4.png")
+            new Image("Enemy3.png")
     };
 
-    final int MAX_BOMBS = 10,  MAX_SHOTS = MAX_BOMBS * 2;
+    final int MAX_ENEMIES = 8,  MAX_SHOTS = MAX_ENEMIES * 3;
     boolean gameOver = false;
     private GraphicsContext gc;
 
@@ -105,7 +103,7 @@ public class SpaceDriver {
     /**
      * Starts a new game stage.
      */
-    public void startNewStage() {
+    private void startNewStage() {
         Bombs.clear();
         shots.clear();
         gameTimeline.playFromStart();
@@ -117,34 +115,39 @@ public class SpaceDriver {
         univ = new ArrayList<>();
         shots = new ArrayList<>();
         Bombs = new ArrayList<>();
+        PLAYER_ALIVE = new Image(chosenCharacter.getBaseImage());
         boss = new Boss(600, HEIGHT / 2, PLAYER_SIZE + 20, new Image("Boss.png"));
-        PLAYER_IMG = new Image(chosenCharacter.getBaseImage());
-        player = new Player(0, HEIGHT / 2, PLAYER_SIZE, PLAYER_IMG);
+        player = new Player(0, HEIGHT / 2, PLAYER_SIZE, PLAYER_ALIVE);
         addBombs();
+        gameTimeline.playFromStart();
     }
 
     //add enemy.
     private void addBombs() {
-        IntStream.range(0, MAX_BOMBS).mapToObj(i -> this.newBomb()).forEach(Bombs::add);
+        IntStream.range(0, MAX_ENEMIES).mapToObj(i -> this.newBomb()).forEach(Bombs::add);
     }
     //Update the score.
     private void updateScore(int score) throws IOException {
-        Scene gameStage = SceneController.getInstance().gameStage;
+        Scene gameStage = SceneController.getInstance().getGameStage();
         scoreLabel = (Label) gameStage.lookup("#scoreLabel");
         scoreLabel.setText("" + score);
     }
-
-    private void bossFight() {
+    private void victory() throws IOException {
+        SceneController.getInstance().showVictory();
+    }
+    private void bossFight() throws IOException {
         Random rand = new Random();
         boss.draw();
         if (boss.posY < 60) {
-            boss.posY = boss.posY + 40;
+            boss.posY = boss.posY + 30;
         } else if (boss.posY > HEIGHT - 60) {
-            boss.posY = boss.posY - 40;
+            boss.posY = boss.posY - 30;
+        } else {
+            boss.posY = boss.posY + rand.nextInt(0,80) - 40;
         }
-        boss.posY = boss.posY + rand.nextInt(0,80) - 40;
 
-        if (rand.nextInt(15) < 2 ) {
+
+        if (rand.nextInt(20) < 2 ) {
             boss.bossBombs.add(boss.bossShot());
         }
 
@@ -214,21 +217,12 @@ public class SpaceDriver {
                 }
             }
         }
-
         for (int i = Bombs.size() - 1; i >= 0; i--) {
             if (Bombs.get(i).destroyed) {
                 Bombs.set(i, newBomb());
             }
         }
-
         gameOver = player.destroyed;
-        if (RAND.nextInt(10) > 2) {
-            univ.add(new Universe());
-        }
-        for (int i = 0; i < univ.size(); i++) {
-            if (univ.get(i).posY > HEIGHT)
-                univ.remove(i);
-        }
     }
 
     //run Graphics
@@ -243,11 +237,19 @@ public class SpaceDriver {
         updateScore(score);
 
         if(gameOver) {
-            gc.setFont(Font.font(28));
+            gc.setFill(Color.WHITE);
+            double rectWidth = WIDTH - 200; // Set the width of the rectangle to WIDTH - 200
+            double rectHeight = HEIGHT - 200; // Set the height of the rectangle to HEIGHT - 200
+            double rectX = (WIDTH - rectWidth) / 2.0; // Calculate the x coordinate for centering the rectangle horizontally
+            double rectY = (HEIGHT - rectHeight) / 2.0; // Calculate the y coordinate for centering the rectangle vertically
+            gc.fillRect(rectX, rectY, rectWidth, rectHeight); // Draw the centered rectangle
+            gc.setFont(Font.font("Ninja Naruto",24));
             gc.setFill(Color.BLACK);
-            gc.drawImage(new Image(chosenCharacter.getGameOverImage()), 100, 100);
-            gc.fillText("You've died.. \n Your Score is: " + score + " \n Click to play again", WIDTH / 2, HEIGHT / 2.5);
-            //	return;
+            gc.drawImage(new Image(chosenCharacter.getGameOverImage()), 120, 100);
+            gc.fillText("You've died.. \n Your Score is: " + score + " \n Click to play again", WIDTH / 2 + 25, HEIGHT / 2.5 + 25);
+            boss.bossBombs.clear();
+            Bombs.clear();
+            gameTimeline.pause();
         }
 
         univ.forEach(Universe::draw);
@@ -391,7 +393,7 @@ public class SpaceDriver {
          */
         public void draw() {
             if(exploding) {
-                gc.drawImage(EXPLOSION_IMG,posX, posY, size, size);
+                gc.drawImage(PLAYER_DEAD,posX, posY, size, size);
             }
             else {
                 gc.drawImage(img, posX, posY, size, size);
@@ -418,7 +420,7 @@ public class SpaceDriver {
                 exploding = true;
                 explosionStep = -1;
 
-                PLAYER_IMG = EXPLOSION_IMG;
+                PLAYER_ALIVE = PLAYER_DEAD;
             }));
             dieAnimation.play();
         }
@@ -544,7 +546,7 @@ public class SpaceDriver {
      * @return enemy object
      */
     Bomb newBomb() {
-        return new Bomb(600 + RAND.nextInt(WIDTH - 200), 20 + RAND.nextInt(HEIGHT - 30), PLAYER_SIZE, BOMBS_IMG[RAND.nextInt(BOMBS_IMG.length)]);
+        return new Bomb(600 + RAND.nextInt(WIDTH - 200), 20 + RAND.nextInt(HEIGHT - 30), PLAYER_SIZE, ENEMIES_IMG[RAND.nextInt(ENEMIES_IMG.length)]);
     }
 
     /**
