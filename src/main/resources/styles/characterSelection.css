@@ -1,0 +1,58 @@
+.title{
+    -fx-font-family: "Ninja Naruto";
+    -fx-font-size: 30px;
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 0);
+}
+
+#naruto {
+  -fx-background-color: #D9D9D9;
+  -fx-background-radius: 10;
+  -fx-background-insets: 0;
+  -fx-font-size: 16px;
+  -fx-font-family: "Ninja Naruto";
+  -fx-text-fill: #000000;
+  -fx-border-color: #A2A2A2;
+  -fx-border-radius: 10;
+  -fx-border-width: 2;
+  -fx-padding: 5px 10px;
+  -fx-cursor: hand;
+  -fx-min-width: 120px;
+  -fx-min-height: 40px;
+}
+
+#sasuke {
+  -fx-background-color: #D9D9D9;
+  -fx-background-radius: 10;
+  -fx-background-insets: 0;
+  -fx-font-size: 16px;
+  -fx-font-family: "Ninja Naruto";
+  -fx-text-fill: #000000;
+  -fx-border-color: #A2A2A2;
+  -fx-border-radius: 10;
+  -fx-border-width: 2;
+  -fx-padding: 5px 10px;
+  -fx-cursor: hand;
+  -fx-min-width: 120px;
+  -fx-min-height: 40px;
+}
+
+#naruto:hover {
+  -fx-background-color: #BDBDBD;
+  -fx-border-color: #808080;
+}
+
+#naruto:pressed {
+  -fx-background-color: #A9A9A9;
+  -fx-border-color: #000000;
+}
+
+#sasuke:hover {
+  -fx-background-color: #BDBDBD;
+  -fx-border-color: #808080;
+}
+
+#sasuke:pressed {
+  -fx-background-color: #A9A9A9;
+  -fx-border-color: #000000;
+}

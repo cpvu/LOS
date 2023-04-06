@@ -5,7 +5,18 @@
     -fx-padding: 10px;
 }
 
-.label {
-    -fx-font-size: 12pt;
-    -fx-text-fill: #333333;
+#name-label {
+    -fx-font-size: 26px;
+    -fx-font-family: "Boruto";
 }
+
+#level {
+    -fx-font-size: 30px;
+    -fx-font-family: "Boruto";
+}
+
+#score-label {
+    -fx-font-size: 16px;
+    -fx-font-family: "Ninja-Family";
+}
+
