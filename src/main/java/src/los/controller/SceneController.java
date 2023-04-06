@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -101,7 +102,10 @@ public class SceneController {
         FXMLLoader fxmlLoader = new FXMLLoader(SpaceDriver.Player.class.getResource("dialogue.fxml"));
         Scene dialogueScene = new Scene(fxmlLoader.load());
 
-       this.dialogueScene = dialogueScene;
+        ImageView characterPortrait = (ImageView) gameStage.getRoot().lookup("#characterPortrait");
+        characterPortrait.setImage(new Image(SpaceDriver.chosenCharacter.getDialogueImage()));
+
+        this.dialogueScene = dialogueScene;
     }
 
    private String generateDialogue() {
@@ -117,6 +121,7 @@ public class SceneController {
 
         Label text = (Label) gameStage.getRoot().lookup("#level");
         text.setText(String.valueOf(SpaceDriver.currentLevel.getLevelName()));
+
 
         currentStage.setScene(dialogueScene);
         currentStage.show();

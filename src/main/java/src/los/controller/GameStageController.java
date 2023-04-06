@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import src.los.common.PlayerClass;
@@ -32,6 +33,8 @@ public class GameStageController implements Initializable {
 
     @FXML
     public Label level;
+    @FXML
+    public ImageView characterPortrait;
 
     private void setGamePane (Canvas gamePane) {
         this.gamePane.getChildren().add(gamePane);

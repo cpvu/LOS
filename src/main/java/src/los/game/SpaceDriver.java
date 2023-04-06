@@ -157,7 +157,7 @@ public class SpaceDriver {
             }
             boss.posY = boss.posY + rand.nextInt(0,100) - 50;
 
-            if (rand.nextInt(10) < 2 ) {
+            if (rand.nextInt(12) < 2 ) {
                 boss.bossBombs.add(boss.bossShot());
             }
 
@@ -186,6 +186,12 @@ public class SpaceDriver {
                 if (shot.collide(boss)) {
                     boss.bossHP -= 1;
                     shot.toRemove = true;
+                }
+            }
+
+            for (int i = boss.bossBombs.size() - 1; i >= 0; i--) {
+                if (boss.bossBombs.get(i).destroyed) {
+                    boss.bossBombs.remove(i);
                 }
             }
 
@@ -253,7 +259,6 @@ public class SpaceDriver {
             }
         }
     }
-
     public class Boss extends Player {
         int posX;
         int posY;
@@ -263,7 +268,7 @@ public class SpaceDriver {
 
         Image bossAttack = new Image("BossAttack.png");
         class BossShots extends Bomb {
-            int SPEED = (score/5) + 2;
+            int SPEED = (score / 7) + 2;
             public BossShots(int posX, int posY, int size, Image image) {
                 super(posX, posY, size, image);
             }
@@ -370,6 +375,11 @@ public class SpaceDriver {
                 gc.drawImage(img, posX, posY, size, size);
             }
         }
+
+        @Override
+        public void explode() {
+            exploding = true;
+        }
     }
 
     //bullets
@@ -408,7 +418,6 @@ public class SpaceDriver {
     //environment
     public class Universe {
         int posX, posY;
-        private int h, w, r, g, b;
         private double opacity;
 
         public Universe() {
