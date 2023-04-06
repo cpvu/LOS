@@ -106,7 +106,7 @@ public class SpaceDriver {
         univ = new ArrayList<>();
         shots = new ArrayList<>();
         Bombs = new ArrayList<>();
-        boss = new Boss(600, 100, PLAYER_SIZE, new Image("SasukeSprite.png"));
+        boss = new Boss(600, HEIGHT / 2, PLAYER_SIZE, new Image("SasukeSprite.png"));
         PLAYER_IMG = new Image(chosenCharacter.getBaseImage());
         player = new Player(0, HEIGHT / 2, PLAYER_SIZE, PLAYER_IMG);
         addBombs();
@@ -150,7 +150,12 @@ public class SpaceDriver {
         if (currentLevel == MapStages.LEVEL_THREE) {
             Random rand = new Random();
             boss.draw();
-            boss.posY = boss.posY + rand.nextInt(-40, 40);
+            if (boss.posY < 50) {
+                boss.posY = boss.posY + 10;
+            } else if (boss.posY > HEIGHT - 50) {
+                boss.posY = boss.posY - 10;
+            }
+            boss.posY = boss.posY + rand.nextInt(0,100) - 50;
             boss.bossBombs.add(boss.bossShot());
 
             boss.bossBombs.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
