@@ -59,10 +59,24 @@ public enum PlayerClass implements EnumInterface{
     public String getCharacterAbility() {
         return this.characterAbility;
     }
+
+    /**
+     * Returns the dead image.
+     * @return the the dead image name as a String.
+     */
     @Override
     public String getDeadImage() { return this.characterDeadImage;}
+
+    /**
+     * Returns the dialogue image.
+     * @return the dialogue image name as a String.
+     */
     @Override
     public String getDialogueImage() { return this.dialogueImage; }
 
+    /**
+     * Returns the game over image
+     * @return the game over image name as a String.
+     */
     public String getGameOverImage() { return this.gameOverImage; }
 }

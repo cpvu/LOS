@@ -3,6 +3,12 @@ package src.los.common;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * An enumeration class representing different stages of a game map.
+ * Each map stage has a name, a number of enemies, and a list of enemy images.
+ * @author Calvin Vu & Hanxiao Mao
+ * @version 1.0
+ */
 public enum MapStages {
     LEVEL_ONE(10, "Forest Outskirts", new ArrayList<String>() {{
         add("Enemy1.png");
@@ -29,14 +35,26 @@ public enum MapStages {
         this.enemyImages = enemyImages;
     }
 
+    /**
+     * Returns the number of enemies in this stage.
+     * @return the number of enemies
+     */
     public int getNumberOfEnemies() {
         return this.numberOfEnemies;
     }
 
+    /**
+     * Returns the name of this stage.
+     * @return the stage name
+     */
     public String getLevelName() {
         return levelName;
     }
 
+    /**
+     * Returns the list of enemy images in this stage.
+     * @return the list of enemy images
+     */
     public ArrayList<String> getEnemyImages() {
         return enemyImages;
     }

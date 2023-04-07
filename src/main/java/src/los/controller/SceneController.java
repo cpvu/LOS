@@ -13,6 +13,15 @@ import src.los.common.PlayerClass;
 import src.los.game.SpaceDriver;
 import java.io.IOException;
 
+/**
+ * The SceneController class manages the creation and display of the different scenes in the Legend of Shinobi game.
+ *
+ * It is a singleton class that allows only one instance to be created.
+ * It creates the main menu, character selection, game stage, dialogue and victory scenes.
+ * It also loads background images for each scene and generates dialogue text for the dialogue scene.
+ * @author Calvin Vu & Hanxiao Mao
+ * @version 1.0
+ */
 public class SceneController {
     private static final int GAME_WIDTH = 700;
     private static final int GAME_HEIGHT = 500;
@@ -36,6 +45,12 @@ public class SceneController {
         mainMenu = createMainMenu();
     }
 
+    /**
+     * Returns the singleton instance of SceneController.
+     * If an instance does not exist, it creates a new one.
+     * @return The singleton instance of SceneController
+     * @throws IOException if an error occurs while creating a new instance of SceneController
+     */
     public static SceneController getInstance() throws IOException {
         if (instance == null) {
             instance = new SceneController();
@@ -43,6 +58,13 @@ public class SceneController {
         return instance;
     }
 
+    /**
+     * Creates a new background image for a given scene and sets it as the background.
+     * If no background image is found, it throws a RuntimeException.
+     * @param sceneBackground The AnchorPane where the background image will be displayed
+     * @param sceneType A string representing the type of scene (game, menu, LEVEL_ONE, LEVEL_TWO, or LEVEL_THREE)
+     * @throws RuntimeException if no background image is found for the given sceneType
+     */
     public void createBackground(AnchorPane sceneBackground, String sceneType) {
         String imageString;
 
@@ -75,10 +97,21 @@ public class SceneController {
         sceneBackground.setBackground(new Background(backgroundImage));
     }
 
+    /**
+     * use JavaFX's FXMLLoader to load FXML files for the character scenes and return a new Scene object.
+     * @return a new Scene object for character
+     * @throws IOException if source file not found
+     */
     private Scene createCharacterSelection() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(SpaceDriver.Player.class.getResource("characterSelection.fxml"));
         return new Scene(fxmlLoader.load());
     }
+
+    /**
+     * use JavaFX's FXMLLoader to load FXML files for the main menu scenes and return a new Scene object.
+     * @return a new Scene object for main menu
+     * @throws IOException if source file not found
+     */
     private Scene createMainMenu() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(SpaceDriver.Player.class.getResource("mainMenu.fxml"));
         Scene menu = new Scene(fxmlLoader.load());
@@ -89,6 +122,10 @@ public class SceneController {
         return menu;
     }
 
+    /**
+     * Loads the game stage FXML file and creates a new game scene. The background of the scene is set using the current level.
+     * @throws IOException If an error occurs while loading the FXML file.
+     */
     public void createGameStage() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(SpaceDriver.Player.class.getResource("gameStage.fxml"));
         Scene gameScene = new Scene(fxmlLoader.load());
@@ -99,6 +136,11 @@ public class SceneController {
         this.gameStage = gameScene;
     }
 
+    /**
+     * Creates a dialogue by loading an FXML file and setting it as the scene.
+     * This method also sets the character portrait image based on the chosen character.
+     * @throws IOException if an I/O error occurs while loading the FXML file
+     */
     public void createDialogue() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(SpaceDriver.Player.class.getResource("dialogue.fxml"));
         Scene dialogueScene = new Scene(fxmlLoader.load());
@@ -109,6 +151,10 @@ public class SceneController {
         this.dialogueScene = dialogueScene;
     }
 
+    /**
+     * Returns a string representing a dialogue based on the current state of the game.
+     * @return a string representing a dialogue based on the current state of the game
+     */
    private String generateDialogue() {
         if (SpaceDriver.chosenCharacter == PlayerClass.NARUTO) {
             return "Dattebayo! That was tough, I need to find Sasuke!";
@@ -119,6 +165,11 @@ public class SceneController {
         return "Javafx is easy.";
     }
 
+    /**
+     * Displays a dialogue scene with generated text and updates the level label.
+     * @param currentLevel the current level represented by a MapStages object
+     * @throws IOException if an input or output exception occurs
+     */
     public void showDialogue(MapStages currentLevel) throws IOException {
         Text dialogueText = (Text) dialogueScene.getRoot().lookup("#textDialogue");
         dialogueText.setText(generateDialogue());
@@ -130,12 +181,21 @@ public class SceneController {
         currentStage.show();
     }
 
+    /**
+     * Loads the FXML file for the victory screen and creates a new Scene from it.
+     * Sets the created Scene to the instance variable victoryScene.
+     * @throws IOException if an I/O error occurs while loading the FXML file
+     */
     public void createVictory() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(SpaceDriver.Player.class.getResource("victory.fxml"));
         Scene victoryScene = new Scene(fxmlLoader.load());
         this.victoryScene = victoryScene;
     }
 
+    /**
+     * Displays the victory scene and sets the dialogue text based on the chosen player character.
+     * @throws IOException if there is an error creating the victory scene.
+     */
     public void showVictory() throws IOException {
         createVictory();
         Text dialogueText = (Text) dialogueScene.getRoot().lookup("#textDialogue");
@@ -149,26 +209,43 @@ public class SceneController {
         currentStage.show();
     }
 
+    /**
+     * Loads the game background image for the current level and sets it as the background for the game scene.
+     * @param currentLevel the current level of the game being played
+     */
     public void loadGameBg(MapStages currentLevel) {
         AnchorPane sceneBackground = (AnchorPane) gameStage.lookup("#background");
         createBackground(sceneBackground, String.valueOf(currentLevel));
     }
 
+    /**
+     * Sets the current stage's scene to the main menu and displays it.
+     */
     public void showMainMenu() {
         currentStage.setScene(mainMenu);
         currentStage.show();
     }
 
+    /**
+     * Sets the current stage's scene to the character selection screen and displays it.
+     */
     public void showCharacterSelect() {
         currentStage.setScene(characterSelection);
         currentStage.show();
     }
 
+    /**
+     * Sets the current stage's scene to the game stage and displays it.
+     */
     public void showGameStage() {
         currentStage.setScene(gameStage);
         currentStage.show();
     }
 
+    /**
+     * Returns the game stage scene.
+     * @return the game stage scene
+     */
     public Scene getGameStage() {
         return this.gameStage;
     }

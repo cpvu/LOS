@@ -36,6 +36,10 @@ public class GameStageController implements Initializable {
     @FXML
     public ImageView characterPortrait;
 
+    /**
+     * Set the game pane to the game.
+     * @param gamePane the target game pane
+     */
     private void setGamePane (Canvas gamePane) {
         this.gamePane.getChildren().add(gamePane);
     }

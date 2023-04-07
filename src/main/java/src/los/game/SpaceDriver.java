@@ -150,9 +150,13 @@ public class SpaceDriver {
         scoreLabel = (Label) gameStage.lookup("#scoreLabel");
         scoreLabel.setText("" + score);
     }
+
+    //Show the victory scene
     private void victory() throws IOException {
         SceneController.getInstance().showVictory();
     }
+
+    //Boss fight set up
     private void bossFight() throws IOException {
         Random rand = new Random();
         boss.draw();
@@ -160,9 +164,8 @@ public class SpaceDriver {
             boss.posY = boss.posY + 30;
         } else if (boss.posY > HEIGHT - 60) {
             boss.posY = boss.posY - 30;
-        } else {
-            boss.posY = boss.posY + rand.nextInt(0,80) - 40;
         }
+        boss.posY = boss.posY + rand.nextInt(0,80) - 40;
 
 
         if (rand.nextInt(20) < 2 ) {
@@ -215,6 +218,7 @@ public class SpaceDriver {
         gameOver = player.destroyed;
     }
 
+    // normal fight set up
     private void regularFight() {
         Bombs.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
             if (player.colide(e) && !player.exploding) {
@@ -537,7 +541,12 @@ public class SpaceDriver {
             return distance  < Rocket.size / 2 + size / 2;
         }
     }
-    //environment
+
+    /**
+     * The Universe class represents a graphical element that is drawn on a canvas.
+     * It has a position, dimensions, color and opacity which are randomly generated upon creation using the
+     * java.util.Random class.
+     */
     public class Universe {
         int posX, posY;
         private int h, w, r, g, b;
@@ -556,6 +565,10 @@ public class SpaceDriver {
             if(opacity > 0.5) opacity = 0.5;
         }
 
+        /**
+         * Draws the Universe on the canvas. The opacity may change over time, and the Y coordinate of the position
+         * is incremented by 20 after each call to this method.
+         */
         public void draw() {
             if(opacity > 0.8) opacity-=0.01;
             if(opacity < 0.1) opacity+=0.01;
